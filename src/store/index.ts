@@ -1,0 +1,6 @@
+export * from '@/store/favoritesStore'
+export * from '@/store/heroesStore'
+export * from '@/store/itemsStore'
+export * from '@/store/patchStore'
+export * from '@/store/searchStore'
+export * from '@/store/settingsStore'

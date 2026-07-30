@@ -1,17 +1,10 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import type { PropsWithChildren } from 'react'
 import { useTheme } from '@/shared/model/useTheme'
 import { ToastRegion } from '@/shared/ui/ToastRegion'
+import { createQueryClient } from '@/services/queryClient'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000,
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-})
+const queryClient = createQueryClient()
 
 function ThemeSynchronizer({ children }: PropsWithChildren) {
   useTheme()
