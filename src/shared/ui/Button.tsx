@@ -7,12 +7,13 @@ type ButtonProps = PropsWithChildren<
 > & { to?: string; variant?: ButtonVariant }
 
 const baseClassName =
-  'inline-flex items-center justify-center gap-2 rounded-control px-4 py-2.5 text-sm font-bold transition-all duration-150 ease-out hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-50'
+  'angular-frame inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-bold transition-colors duration-150 ease-out disabled:pointer-events-none disabled:opacity-50'
 const variants: Record<ButtonVariant, string> = {
-  primary: 'border border-brand/40 bg-brand text-white shadow-glow',
-  secondary: 'border border-ink/15 bg-surface text-ink hover:bg-elevated',
+  primary: 'border border-brand/50 bg-brand text-white hover:shadow-glow',
+  secondary:
+    'border border-ink/15 bg-surface text-ink hover:border-ink/25 hover:bg-elevated',
   ghost: 'text-muted hover:bg-elevated hover:text-ink',
-  danger: 'bg-danger text-white',
+  danger: 'border border-danger/50 bg-danger text-white hover:shadow-glow',
 }
 
 export function Button({

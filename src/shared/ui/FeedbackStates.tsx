@@ -13,7 +13,7 @@ export function EmptyState({
   action?: string
 }) {
   return (
-    <div className="rounded-control border border-dashed border-ink/15 bg-inset/50 px-5 py-8 text-center">
+    <div className="angular-frame border border-dashed border-ink/15 bg-inset/50 px-5 py-8 text-center">
       <Inbox className="mx-auto text-muted" size={24} />
       <h3 className="mt-3 text-sm font-semibold">{title}</h3>
       <p className="mx-auto mt-1 max-w-sm text-sm leading-6 text-muted">
@@ -41,7 +41,7 @@ export function ErrorState({
   onRetry?: () => void
 }) {
   return (
-    <div className="rounded-control border border-danger/20 bg-danger/5 px-5 py-6 text-center">
+    <div className="angular-frame border border-danger/20 bg-danger/5 px-5 py-6 text-center">
       <AlertTriangle className="mx-auto text-danger" size={22} />
       <h3 className="mt-3 text-sm font-semibold">{title}</h3>
       <p className="mt-1 text-sm leading-6 text-muted">{description}</p>
@@ -61,7 +61,7 @@ export function Skeleton({ className = '' }: { className?: string }) {
   return (
     <div
       aria-hidden="true"
-      className={`animate-pulse rounded-control bg-elevated ${className}`}
+      className={`angular-frame animate-pulse bg-elevated ${className}`}
     />
   )
 }

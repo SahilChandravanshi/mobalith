@@ -13,7 +13,7 @@ const tones: Record<BadgeTone, string> = {
 export function Badge({ tone = 'muted', children }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center rounded-control border px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-wide ${tones[tone]}`}
+      className={`angular-frame inline-flex items-center border px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-wide ${tones[tone]}`}
     >
       {children}
     </span>

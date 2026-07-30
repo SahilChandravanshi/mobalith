@@ -6,9 +6,9 @@ import { useTheme } from '@/shared/model/useTheme'
 import { Drawer } from '@/shared/ui/Overlay'
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
-  `flex items-center gap-3 rounded-control border px-3 py-2 text-sm font-medium transition-colors duration-150 ease-out ${isActive ? 'border-brand/20 bg-brand/15 text-brand' : 'border-transparent text-muted hover:border-ink/10 hover:bg-elevated hover:text-ink'}`
+  `angular-frame flex items-center gap-3 border px-3 py-2 text-sm font-medium transition-colors duration-150 ease-out ${isActive ? 'border-brand/20 bg-brand/15 text-brand' : 'border-transparent text-muted hover:border-ink/10 hover:bg-elevated hover:text-ink'}`
 const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `flex flex-col items-center gap-1 rounded-control px-2 py-1.5 text-[0.625rem] font-semibold ${isActive ? 'text-brand' : 'text-muted'}`
+  `angular-frame flex flex-col items-center gap-1 px-2 py-1.5 text-[0.625rem] font-semibold ${isActive ? 'text-brand' : 'text-muted'}`
 
 export function AppShell() {
   const { theme, setTheme } = useTheme()
@@ -25,7 +25,7 @@ export function AppShell() {
             to="/"
             className="flex items-center gap-2.5 font-semibold tracking-tight"
           >
-            <span className="grid size-8 place-items-center rounded-control bg-gradient-to-br from-brand to-cyan font-black text-white shadow-glow">
+            <span className="angular-frame grid size-8 place-items-center bg-gradient-to-br from-brand to-cyan font-black text-white shadow-glow">
               M
             </span>
             <span>Mobalith</span>
@@ -132,7 +132,7 @@ export function AppShell() {
             ))}
         </nav>
         <button
-          className="mt-6 flex w-full items-center justify-between rounded-control border border-ink/10 px-3 py-2 text-sm font-medium"
+          className="angular-frame mt-6 flex w-full items-center justify-between border border-ink/10 px-3 py-2 text-sm font-medium"
           onClick={() => setTheme(isDark ? 'light' : 'dark')}
         >
           {isDark ? 'Use light theme' : 'Use dark theme'}

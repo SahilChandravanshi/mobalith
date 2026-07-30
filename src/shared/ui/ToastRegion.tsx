@@ -13,7 +13,7 @@ export function ToastRegion() {
         {toasts.map((toast) => (
           <motion.div
             key={toast.id}
-            className="pointer-events-auto flex gap-3 rounded-control border border-success/25 bg-surface p-3.5 shadow-float"
+            className="angular-frame pointer-events-auto flex gap-3 border border-success/25 bg-surface p-3.5 shadow-float"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}

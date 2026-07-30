@@ -4,6 +4,12 @@
 
 :root {
   color-scheme: light;
+  --corner-chamfer: 0.375rem;
+  --border-subtle: rgb(var(--color-ink) / 0.14);
+  --border-strong: rgb(var(--color-ink) / 0.22);
+  --surface-highlight: rgb(255 255 255 / 0.42);
+  --elevation-surface: inset 0 1px 0 var(--surface-highlight);
+  --elevation-float: 0 12px 28px rgb(0 0 0 / 0.28);
   --color-canvas: 239 239 240;
   --color-surface: 255 255 255;
   --color-elevated: 232 232 234;
@@ -20,6 +26,11 @@
 
 .dark {
   color-scheme: dark;
+  --border-subtle: rgb(var(--color-ink) / 0.11);
+  --border-strong: rgb(var(--color-ink) / 0.18);
+  --surface-highlight: rgb(255 255 255 / 0.035);
+  --elevation-surface: inset 0 1px 0 var(--surface-highlight);
+  --elevation-float: 0 12px 28px rgb(0 0 0 / 0.45);
   --color-canvas: 9 9 9;
   --color-surface: 20 20 20;
   --color-elevated: 26 26 26;
@@ -70,19 +81,61 @@
     );
   }
   .panel {
-    @apply rounded-panel border border-ink/10 bg-surface p-5 shadow-panel sm:p-6;
+    @apply border bg-surface p-5 sm:p-6;
+    border-color: var(--border-subtle);
+    box-shadow: var(--elevation-surface);
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--corner-chamfer)) 0,
+      100% var(--corner-chamfer),
+      100% 100%,
+      var(--corner-chamfer) 100%,
+      0 calc(100% - var(--corner-chamfer))
+    );
   }
   .card {
-    @apply rounded-panel border border-ink/10 bg-surface p-5 shadow-panel transition-colors duration-200 sm:p-6;
+    @apply border bg-surface p-5 transition-colors duration-200 sm:p-6;
+    border-color: var(--border-subtle);
+    box-shadow: var(--elevation-surface);
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--corner-chamfer)) 0,
+      100% var(--corner-chamfer),
+      100% 100%,
+      var(--corner-chamfer) 100%,
+      0 calc(100% - var(--corner-chamfer))
+    );
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+    background-color: rgb(var(--color-elevated));
+  }
+  .angular-frame {
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--corner-chamfer)) 0,
+      100% var(--corner-chamfer),
+      100% 100%,
+      var(--corner-chamfer) 100%,
+      0 calc(100% - var(--corner-chamfer))
+    );
+  }
+  .angular-frame-large {
+    --corner-chamfer: 0.75rem;
   }
   .input {
-    @apply h-11 w-full rounded-control border border-ink/15 bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-brand/60 focus:ring-4 focus:ring-brand/10;
+    @apply angular-frame h-11 w-full border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-brand/60 focus:ring-4 focus:ring-brand/10;
+    border-color: var(--border-subtle);
   }
   .panel-inset {
-    @apply rounded-control border border-ink/10 bg-inset;
+    @apply angular-frame border bg-inset;
+    border-color: var(--border-subtle);
   }
   .icon-button {
-    @apply grid size-9 place-items-center rounded-control border border-transparent text-muted transition-colors duration-150 ease-out hover:border-ink/10 hover:bg-elevated hover:text-ink;
+    @apply angular-frame grid size-9 place-items-center border border-transparent text-muted transition-colors duration-150 ease-out hover:bg-elevated hover:text-ink;
+  }
+  .icon-button:hover {
+    border-color: var(--border-subtle);
   }
   .eyebrow {
     @apply text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-gold;
@@ -91,7 +144,7 @@
     @apply text-xs font-medium text-muted;
   }
   .status-live {
-    @apply inline-flex items-center gap-1.5 rounded-control border border-success/25 bg-success/10 px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-wide text-success;
+    @apply angular-frame inline-flex items-center gap-1.5 border border-success/25 bg-success/10 px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-wide text-success;
   }
   .section-title {
     @apply text-xl font-semibold tracking-tight sm:text-2xl;

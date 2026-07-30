@@ -31,7 +31,7 @@ export function Modal({
           <motion.section
             aria-modal="true"
             role="dialog"
-            className="relative w-full max-w-lg rounded-panel border border-ink/15 bg-surface p-5 shadow-float sm:p-6"
+            className="angular-frame relative w-full max-w-lg border border-ink/15 bg-surface p-5 shadow-float sm:p-6"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
@@ -77,7 +77,7 @@ export function Drawer({
           <motion.aside
             aria-modal="true"
             role="dialog"
-            className="absolute inset-y-0 right-0 w-full max-w-sm border-l border-ink/15 bg-surface p-5 shadow-float"
+            className="angular-frame absolute inset-y-0 right-0 w-full max-w-sm border-l border-ink/15 bg-surface p-5 shadow-float"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}

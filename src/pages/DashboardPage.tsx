@@ -70,8 +70,8 @@ export function DashboardPage() {
       transition={{ duration: 0.2, ease: 'easeOut' }}
     >
       <section className="mx-auto max-w-6xl">
-        <div className="relative overflow-hidden rounded-[1.5rem] border border-brand/20 bg-gradient-to-br from-brand/25 via-surface to-cyan/10 px-5 py-10 shadow-panel sm:px-9 sm:py-14">
-          <div className="absolute -right-12 -top-16 size-64 rounded-full bg-cyan/10 blur-3xl" />
+        <div className="angular-frame angular-frame-large relative overflow-hidden border border-brand/20 bg-gradient-to-br from-brand/25 via-surface to-cyan/10 px-5 py-10 shadow-panel sm:px-9 sm:py-14">
+          <div className="absolute -right-12 -top-16 size-64 bg-cyan/10 blur-3xl" />
           <div className="relative max-w-2xl">
             <Badge tone="gold">Mobalith intelligence</Badge>
             <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -111,9 +111,9 @@ export function DashboardPage() {
               <a
                 key={to}
                 href={`#${to}`}
-                className="group flex items-center gap-4 rounded-control border border-ink/10 bg-surface p-4 shadow-panel transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30"
+                className="angular-frame group flex items-center gap-4 border border-ink/10 bg-surface p-4 shadow-panel transition-colors duration-200 hover:border-brand/30 hover:bg-elevated"
               >
-                <span className="grid size-10 shrink-0 place-items-center rounded-control bg-brand/10 text-brand">
+                <span className="angular-frame grid size-10 shrink-0 place-items-center bg-brand/10 text-brand">
                   <Icon size={20} />
                 </span>
                 <span className="min-w-0 flex-1">
