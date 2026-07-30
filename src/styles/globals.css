@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --color-canvas: 239 239 240;
+  --color-surface: 255 255 255;
+  --color-elevated: 232 232 234;
+  --color-inset: 224 224 226;
+  --color-ink: 24 24 27;
+  --color-muted: 100 100 108;
+  --color-brand: 48 94 211;
+  --color-gold: 175 117 25;
+  --color-cyan: 0 133 163;
+  --color-success: 20 133 91;
+  --color-danger: 190 52 65;
+  --color-warning: 170 97 8;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-canvas: 9 9 9;
+  --color-surface: 20 20 20;
+  --color-elevated: 26 26 26;
+  --color-inset: 15 15 15;
+  --color-ink: 244 244 245;
+  --color-muted: 166 166 173;
+  --color-brand: 92 132 255;
+  --color-gold: 234 180 74;
+  --color-cyan: 50 192 214;
+  --color-success: 62 196 135;
+  --color-danger: 244 104 122;
+  --color-warning: 241 185 54;
+}
+
+@layer base {
+  * {
+    @apply border-ink/10;
+  }
+  html {
+    @apply bg-canvas font-sans antialiased;
+  }
+  body {
+    @apply m-0 min-w-[320px] bg-canvas font-sans text-ink;
+  }
+  ::selection {
+    @apply bg-brand/35 text-ink;
+  }
+  button {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-canvas;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .app-canvas {
+    background-image: radial-gradient(
+      circle at 50% -30%,
+      rgb(var(--color-brand) / 0.1),
+      transparent 36rem
+    );
+  }
+  .panel {
+    @apply rounded-panel border border-ink/10 bg-surface p-5 shadow-panel sm:p-6;
+  }
+  .card {
+    @apply rounded-panel border border-ink/10 bg-surface p-5 shadow-panel transition-colors duration-200 sm:p-6;
+  }
+  .input {
+    @apply h-11 w-full rounded-control border border-ink/15 bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted focus:border-brand/60 focus:ring-4 focus:ring-brand/10;
+  }
+  .panel-inset {
+    @apply rounded-control border border-ink/10 bg-inset;
+  }
+  .icon-button {
+    @apply grid size-9 place-items-center rounded-control border border-transparent text-muted transition-colors duration-150 ease-out hover:border-ink/10 hover:bg-elevated hover:text-ink;
+  }
+  .eyebrow {
+    @apply text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-gold;
+  }
+  .data-label {
+    @apply text-xs font-medium text-muted;
+  }
+  .status-live {
+    @apply inline-flex items-center gap-1.5 rounded-control border border-success/25 bg-success/10 px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-wide text-success;
+  }
+  .section-title {
+    @apply text-xl font-semibold tracking-tight sm:text-2xl;
+  }
+}
