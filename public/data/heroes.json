@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Miya",
+    "slug": "miya",
+    "title": "Moonlight Archer",
+    "roles": ["Marksman"],
+    "lanes": ["Gold"],
+    "specialty": ["Reap"],
+    "damageType": "Physical",
+    "difficulty": "Easy",
+    "tier": "A",
+    "images": {
+      "portrait": "/images/heroes/miya/portrait.webp",
+      "banner": "/images/heroes/miya/banner.webp",
+      "square": "/images/heroes/miya/icon.webp"
+    },
+    "stats": {
+      "durability": 4,
+      "offense": 9,
+      "skillEffects": 5,
+      "difficulty": 2
+    },
+    "rates": {
+      "winRate": 50.1,
+      "pickRate": 2.4,
+      "banRate": 0.3
+    }
+  },
+  {
+    "id": 2,
+    "name": "Tigreal",
+    "slug": "tigreal",
+    "title": "Warrior of Dawn",
+    "roles": ["Tank"],
+    "lanes": ["Roam"],
+    "specialty": ["Crowd Control", "Initiator"],
+    "damageType": "Physical",
+    "difficulty": "Easy",
+    "tier": "A",
+    "images": {
+      "portrait": "/images/heroes/tigreal/portrait.webp",
+      "banner": "/images/heroes/tigreal/banner.webp",
+      "square": "/images/heroes/tigreal/icon.webp"
+    },
+    "stats": {
+      "durability": 10,
+      "offense": 3,
+      "skillEffects": 8,
+      "difficulty": 3
+    },
+    "rates": {
+      "winRate": 51.8,
+      "pickRate": 3.1,
+      "banRate": 1.5
+    }
+  }
+]
