@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * Mobalith
- * Hero Domain Types
+ * Hero Entity
  * ============================================================================
  */
 
@@ -37,6 +37,14 @@ export type HeroTier =
   | "B"
   | "C";
 
+
+export interface HeroImages {
+  portrait: string;
+  square: string;
+  banner: string;
+}
+
+
 export interface HeroStats {
   durability: number;
   offense: number;
@@ -44,37 +52,48 @@ export interface HeroStats {
   difficulty: number;
 }
 
+
 export interface HeroRates {
   winRate: number;
   pickRate: number;
   banRate: number;
 }
 
-export interface HeroImages {
-  portrait: string;
-  banner: string;
-  square: string;
+
+export interface HeroSkill {
+  name: string;
+  description: string;
+  type:
+    | "Passive"
+    | "Skill"
+    | "Ultimate";
 }
+
+
+export interface HeroBuildItem {
+  name: string;
+  icon: string;
+}
+
+
+export interface HeroRelation {
+  heroId: number;
+  reason: string;
+}
+
 
 export interface Hero {
   id: number;
-
   name: string;
-
   slug: string;
-
   title: string;
 
   roles: HeroRole[];
-
   lanes: Lane[];
-
   specialty: string[];
 
   damageType: DamageType;
-
   difficulty: Difficulty;
-
   tier: HeroTier;
 
   releaseDate?: string;
@@ -84,23 +103,12 @@ export interface Hero {
   stats: HeroStats;
 
   rates?: HeroRates;
+
+  skills?: HeroSkill[];
+
+  recommendedBuild?: HeroBuildItem[];
+
+  counters?: HeroRelation[];
+
+  synergy?: HeroRelation[];
 }
-
-export interface HeroFilter {
-  search: string;
-
-  roles: HeroRole[];
-
-  lanes: Lane[];
-
-  tier: HeroTier[];
-
-  difficulty: Difficulty[];
-}
-
-export type HeroSort =
-  | "name"
-  | "tier"
-  | "winRate"
-  | "pickRate"
-  | "banRate";

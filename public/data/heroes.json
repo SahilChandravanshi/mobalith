@@ -25,7 +25,51 @@
       "winRate": 50.1,
       "pickRate": 2.4,
       "banRate": 0.3
-    }
+    },
+"skills": [
+  {
+    "name": "Moon Blessing",
+    "type": "Passive",
+    "description": "Miya gains attack speed after basic attacks."
+  },
+  {
+    "name": "Fission Shot",
+    "type": "Skill",
+    "description": "Miya fires split arrows that deal damage to enemies."
+  },
+  {
+    "name": "Rain of Arrows",
+    "type": "Skill",
+    "description": "Miya launches arrows that slow and damage enemies."
+  },
+  {
+    "name": "Hidden Moonlight",
+    "type": "Ultimate",
+    "description": "Miya hides herself and gains movement speed."
+  }
+],
+"recommendedBuild": [
+  {
+    "name": "Swift Boots",
+    "icon": "/images/items/swift-boots.webp"
+  },
+  {
+    "name": "Haas Claws",
+    "icon": "/images/items/haas-claws.webp"
+  }
+],
+"counters": [
+  {
+    "heroId": 2,
+    "reason": "Tigreal can catch Miya with crowd control."
+  }
+],
+"synergy": [
+  {
+    "heroId": 2,
+    "reason": "Tigreal can protect Miya during fights."
+  }
+]
   },
   {
     "id": 2,

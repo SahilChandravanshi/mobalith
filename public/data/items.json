@@ -1,1 +1,25 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "Swift Boots",
+    "description": "Increases Movement Speed and Attack Speed.",
+    "category": "Movement",
+    "price": 710,
+    "icon": "/images/items/swift-boots.webp",
+    "stats": {
+      "movementSpeed": 40,
+      "attack": 15
+    }
+  },
+  {
+    "id": 2,
+    "name": "Blade of Despair",
+    "description": "Massively increases Physical Attack.",
+    "category": "Attack",
+    "price": 3010,
+    "icon": "/images/items/blade-of-despair.webp",
+    "stats": {
+      "attack": 160
+    }
+  }
+]
