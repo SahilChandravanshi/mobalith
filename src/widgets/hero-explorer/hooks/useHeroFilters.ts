@@ -1,21 +1,15 @@
 import { useMemo, useState } from "react";
 
 import type { Hero } from "@/entities/hero/model/hero";
-import type { HeroFilters } from "../model/filters";
 
-const defaultFilters: HeroFilters = {
-  search: "",
-  roles: [],
-  lanes: [],
-  tiers: [],
-  damageTypes: [],
-  difficulties: [],
-  sort: "name",
-};
+import {
+  DEFAULT_FILTERS,
+  type HeroFilters,
+} from "../model/filters";
 
 export function useHeroFilters(heroes: Hero[]) {
   const [filters, setFilters] =
-    useState<HeroFilters>(defaultFilters);
+    useState<HeroFilters>(DEFAULT_FILTERS);
 
   const filteredHeroes = useMemo(() => {
     let result = [...heroes];
@@ -114,7 +108,7 @@ export function useHeroFilters(heroes: Hero[]) {
   }
 
   function resetFilters() {
-    setFilters(defaultFilters);
+    setFilters(DEFAULT_FILTERS);
   }
 
   return {

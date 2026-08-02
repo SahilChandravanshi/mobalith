@@ -3,8 +3,12 @@ import { Input } from "@/shared/ui/Input";
 import HeroCard from "@/entities/hero/ui/HeroCard";
 import { useHeroes } from "@/entities/hero/api/useHeroes";
 
-import { ErrorState, Skeleton } from "@/shared/ui/FeedbackStates";
+import {
+  ErrorState,
+  Skeleton,
+} from "@/shared/ui/FeedbackStates";
 
+import { HeroFilterBar } from "./HeroFilterBar";
 import { useHeroFilters } from "../hooks/useHeroFilters";
 
 export function HeroExplorer() {
@@ -18,6 +22,7 @@ export function HeroExplorer() {
     filters,
     filteredHeroes,
     updateFilter,
+    resetFilters,
   } = useHeroFilters(heroes);
 
   if (loading) {
@@ -35,14 +40,12 @@ export function HeroExplorer() {
 
   if (error) {
     return (
-      <ErrorState
-        description={error}
-      />
+      <ErrorState description={error} />
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
 
       <Input
         icon="search"
@@ -56,15 +59,19 @@ export function HeroExplorer() {
         }
       />
 
-      <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+      <HeroFilterBar
+        filters={filters}
+        updateFilter={updateFilter}
+        resetFilters={resetFilters}
+      />
 
+      <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
         {filteredHeroes.map((hero) => (
           <HeroCard
             key={hero.id}
             hero={hero}
           />
         ))}
-
       </section>
 
     </div>

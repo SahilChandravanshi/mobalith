@@ -3,9 +3,13 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { fileURLToPath, URL } from 'node:url'
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(() => ({
   base: process.env.VITE_BASE_PATH ?? '/',
-  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -38,7 +42,9 @@ export default defineConfig(({ mode }) => ({
         navigateFallback: 'index.html',
         globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
       },
-      devOptions: { enabled: mode === 'development' },
+      devOptions: {
+        enabled: false,
+      },
     }),
   ],
 }))
