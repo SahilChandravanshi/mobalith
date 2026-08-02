@@ -1,30 +1,26 @@
-import type { HeroRelation } from "@/entities/hero/model/hero";
+import type { Hero } from "@/entities/hero/model/hero";
 
 import { Card } from "@/shared/ui/Card";
 
-
 interface HeroSynergyProps {
-  synergy?: HeroRelation[];
+  hero: Hero;
 }
 
-
 export function HeroSynergy({
-  synergy,
+  hero,
 }: HeroSynergyProps) {
+  const synergy = hero.synergies;
 
   if (!synergy || synergy.length === 0) {
     return null;
   }
 
-
   return (
     <Card title="Synergy">
-
       <div className="space-y-3">
-
-        {synergy.map((hero) => (
+        {synergy.map((ally) => (
           <div
-            key={hero.heroId}
+            key={ally.heroId}
             className="
               border
               border-ink/10
@@ -32,20 +28,16 @@ export function HeroSynergy({
               p-4
             "
           >
-
             <p className="font-semibold">
-              Hero ID: {hero.heroId}
+              Hero ID: {ally.heroId}
             </p>
 
             <p className="mt-1 text-sm text-muted">
-              {hero.reason}
+              {ally.reason}
             </p>
-
           </div>
         ))}
-
       </div>
-
     </Card>
   );
 }

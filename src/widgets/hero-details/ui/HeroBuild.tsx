@@ -1,30 +1,26 @@
-import type { HeroBuildItem } from "@/entities/hero/model/hero";
+import type { Hero } from "@/entities/hero/model/hero";
 
 import { Card } from "@/shared/ui/Card";
 
-
 interface HeroBuildProps {
-  build?: HeroBuildItem[];
+  hero: Hero;
 }
 
-
 export function HeroBuild({
-  build,
+  hero,
 }: HeroBuildProps) {
+  const build = hero.recommendedBuild;
 
   if (!build || build.length === 0) {
     return null;
   }
 
-
   return (
     <Card title="Recommended Build">
-
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-
         {build.map((item) => (
           <div
-            key={item.name}
+            key={item.id}
             className="
               border
               border-ink/10
@@ -33,7 +29,6 @@ export function HeroBuild({
               text-center
             "
           >
-
             <img
               src={item.icon}
               alt={item.name}
@@ -49,12 +44,9 @@ export function HeroBuild({
             <p className="mt-2 text-xs text-muted">
               {item.name}
             </p>
-
           </div>
         ))}
-
       </div>
-
     </Card>
   );
 }

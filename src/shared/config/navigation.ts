@@ -1,158 +1,133 @@
-import type { LucideIcon } from 'lucide-react'
 import {
-  BarChart3,
-  BookOpen,
-  BrainCircuit,
-  Crosshair,
-  Gem,
-  Heart,
-  ListTree,
   Shield,
-  ShieldAlert,
+  Gem,
   Sparkles,
-  Swords,
   Trophy,
+  ShieldAlert,
   Users,
+  Crosshair,
+  ListFilter,
+  Activity,
+  BrainCircuit,
+  FlaskConical,
   Wrench,
-} from 'lucide-react'
+  BookOpen,
+  type LucideIcon,
+} from "lucide-react";
 
-export type NavigationSection = 'Explore' | 'Tools' | 'Intelligence' | 'Library'
-export type FeatureRoute = {
-  path: string
-  title: string
-  description: string
-  icon: LucideIcon
-  section: NavigationSection
-  nav?: boolean
+export const navigationSections = [
+  "Heroes",
+  "Strategy",
+  "Tools",
+] as const;
+
+export interface FeatureRoute {
+  path: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  section: (typeof navigationSections)[number];
+  nav?: boolean;
 }
 
 export const featureRoutes: FeatureRoute[] = [
   {
-    path: 'heroes',
-    title: 'Heroes',
-    description: 'Explore hero stats, roles, skills, and current performance.',
+    path: "heroes",
+    title: "Heroes",
+    description: "Browse every Mobile Legends hero.",
     icon: Shield,
-    section: 'Explore',
+    section: "Heroes",
   },
   {
-    path: 'heroes/:heroId',
-    title: 'Hero Details',
-    description:
-      'Inspect a hero’s abilities, matchups, builds, and live context.',
+    path: "heroes/:slug",
+    title: "Hero Details",
+    description: "Hero details.",
     icon: Shield,
-    section: 'Explore',
+    section: "Heroes",
     nav: false,
   },
   {
-    path: 'items',
-    title: 'Items',
-    description: 'Find item stats, effects, and build paths.',
+    path: "items",
+    title: "Items",
+    description: "Browse all items.",
     icon: Gem,
-    section: 'Explore',
+    section: "Heroes",
   },
   {
-    path: 'emblems',
-    title: 'Emblems',
-    description: 'Build talent pages that match your role and game plan.',
+    path: "emblems",
+    title: "Emblems",
+    description: "Emblem builds.",
     icon: Sparkles,
-    section: 'Explore',
+    section: "Heroes",
   },
   {
-    path: 'tier-lists',
-    title: 'Tier Lists',
-    description: 'Track the heroes defining the current meta.',
+    path: "tier-lists",
+    title: "Tier Lists",
+    description: "Current meta rankings.",
     icon: Trophy,
-    section: 'Explore',
+    section: "Strategy",
   },
   {
-    path: 'counters',
-    title: 'Counters',
-    description: 'Find favorable picks and understand the matchup.',
+    path: "counters",
+    title: "Counters",
+    description: "Hero counters.",
     icon: ShieldAlert,
-    section: 'Tools',
+    section: "Strategy",
   },
   {
-    path: 'synergy',
-    title: 'Synergy',
-    description: 'Assess how hero pairings complement a team composition.',
+    path: "synergy",
+    title: "Synergy",
+    description: "Hero synergies.",
     icon: Users,
-    section: 'Tools',
+    section: "Strategy",
   },
   {
-    path: 'draft',
-    title: 'Draft Assistant',
-    description: 'Plan stronger picks, bans, and team compositions.',
+    path: "draft-assistant",
+    title: "Draft Assistant",
+    description: "Draft recommendations.",
     icon: Crosshair,
-    section: 'Tools',
+    section: "Strategy",
   },
   {
-    path: 'compare',
-    title: 'Compare Heroes',
-    description: 'Compare strengths, stats, and matchups side by side.',
-    icon: ListTree,
-    section: 'Tools',
+    path: "compare-heroes",
+    title: "Compare Heroes",
+    description: "Compare heroes.",
+    icon: ListFilter,
+    section: "Tools",
   },
   {
-    path: 'builds',
-    title: 'Builds',
-    description: 'Discover efficient builds for every situation.',
-    icon: Swords,
-    section: 'Library',
+    path: "meta-pulse",
+    title: "Meta Pulse",
+    description: "Latest meta trends.",
+    icon: Activity,
+    section: "Tools",
   },
   {
-    path: 'patch-notes',
-    title: 'Patch Notes',
-    description: 'Understand balance changes and their practical impact.',
-    icon: BookOpen,
-    section: 'Library',
-  },
-  {
-    path: 'strategy',
-    title: 'Strategy Hub',
-    description: 'Sharpen your game sense with practical guides.',
-    icon: BookOpen,
-    section: 'Library',
-  },
-  {
-    path: 'favorites',
-    title: 'Favorites',
-    description: 'Keep your most useful heroes, builds, and tools close.',
-    icon: Heart,
-    section: 'Library',
-  },
-  {
-    path: 'meta-pulse',
-    title: 'Meta Pulse',
-    description: 'See the signals behind the evolving meta.',
-    icon: BarChart3,
-    section: 'Intelligence',
-  },
-  {
-    path: 'intelligence',
-    title: 'Mobalith Intelligence',
-    description: 'Rule-based insights built from transparent game data.',
+    path: "mobalith-intelligence",
+    title: "Mobalith Intelligence",
+    description: "AI-powered insights.",
     icon: BrainCircuit,
-    section: 'Intelligence',
+    section: "Tools",
   },
   {
-    path: 'labs',
-    title: 'Labs',
-    description: 'Try experimental analysis tools and visualizations.',
-    icon: Wrench,
-    section: 'Intelligence',
+    path: "labs",
+    title: "Labs",
+    description: "Experimental features.",
+    icon: FlaskConical,
+    section: "Tools",
   },
   {
-    path: 'settings',
-    title: 'Settings',
-    description: 'Manage your display and data preferences.',
+    path: "builds",
+    title: "Builds",
+    description: "Recommended builds.",
     icon: Wrench,
-    section: 'Library',
+    section: "Tools",
   },
-]
-
-export const navigationSections: NavigationSection[] = [
-  'Explore',
-  'Tools',
-  'Intelligence',
-  'Library',
-]
+  {
+    path: "patch-notes",
+    title: "Patch Notes",
+    description: "Latest game updates.",
+    icon: BookOpen,
+    section: "Tools",
+  },
+];
