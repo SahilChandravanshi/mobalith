@@ -1,5 +1,4 @@
-import ItemCard from "@/entities/item/ui/ItemCard";
-
+import { ItemCard } from "@/entities/item/ui/ItemCard";
 import { useItems } from "@/entities/item/api/useItems";
 
 import {
@@ -7,33 +6,25 @@ import {
   Skeleton,
 } from "@/shared/ui/FeedbackStates";
 
-
 export function ItemGrid() {
-
   const {
     items,
     loading,
     error,
   } = useItems();
 
-
   if (loading) {
     return (
-      <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-
-        {Array.from({
-          length: 10,
-        }).map((_, index) => (
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {Array.from({ length: 10 }).map((_, index) => (
           <Skeleton
             key={index}
-            className="h-64"
+            className="h-28"
           />
         ))}
-
-      </section>
+      </div>
     );
   }
-
 
   if (error) {
     return (
@@ -43,31 +34,14 @@ export function ItemGrid() {
     );
   }
 
-
-  if (items.length === 0) {
-    return null;
-  }
-
-
   return (
-    <section
-      className="
-        grid
-        grid-cols-2
-        gap-4
-        sm:grid-cols-3
-        lg:grid-cols-5
-        xl:grid-cols-6
-      "
-    >
-
+    <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
       {items.map((item) => (
         <ItemCard
           key={item.id}
           item={item}
         />
       ))}
-
     </section>
   );
 }

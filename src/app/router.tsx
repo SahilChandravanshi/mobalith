@@ -5,7 +5,7 @@ import { AppShell } from '@/shared/ui/AppShell'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { FeaturePage } from '@/pages/FeaturePage'
 import { HeroesPage } from '@/pages/heroes/HeroesPage'
-import { HeroDetailsPage } from '@/pages/heroes/HeroDetailsPage'
+import HeroDetailsPage from '@/pages/heroes/HeroDetailsPage'
 import { ItemsPage } from '@/pages/items/ItemsPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 

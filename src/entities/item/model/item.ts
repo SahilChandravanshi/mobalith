@@ -6,26 +6,52 @@ export type ItemCategory =
   | "Jungle"
   | "Roam";
 
-
 export interface ItemStats {
-  attack?: number;
-  magicPower?: number;
-  defense?: number;
   hp?: number;
-  movementSpeed?: number;
-}
 
+  mana?: number;
+
+  physicalAttack?: number;
+
+  magicPower?: number;
+
+  physicalDefense?: number;
+
+  magicDefense?: number;
+
+  attackSpeed?: number;
+
+  movementSpeed?: number;
+
+  cooldownReduction?: number;
+
+  criticalChance?: number;
+
+  lifesteal?: number;
+
+  hybridLifesteal?: number;
+
+  penetration?: number;
+}
 
 export interface Item {
   id: number;
+
+  slug: string;
+
   name: string;
-  description: string;
 
   category: ItemCategory;
 
   price: number;
 
-  icon: string;
+  description: string;
 
-  stats?: ItemStats;
+  uniquePassive?: string;
+
+  activeSkill?: string;
+
+  stats: ItemStats;
+
+  image: string;
 }

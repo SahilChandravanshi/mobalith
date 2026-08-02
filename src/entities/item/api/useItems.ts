@@ -1,86 +1,30 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-import type { Item } from "../model/item";
-import { itemService } from "./itemService";
+import { queryKeys } from "@/shared/api/queryKeys";
 
+import { itemRepository } from "../repository/itemRepository";
 
 export function useItems() {
+  const query = useQuery({
+    queryKey: queryKeys.items,
+    queryFn: () => itemRepository.getItems(),
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 
-  const [items, setItems] = useState<Item[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] =
-    useState<string | null>(null);
-
-
-  useEffect(() => {
-
-    let mounted = true;
-
-
-    async function loadItems() {
-
-      try {
-
-        setLoading(true);
-
-
-        const data =
-          await itemService.getItems();
-
-
-        if (!mounted) return;
-
-
-        setItems(data);
-        setError(null);
-
-
-      } catch (err) {
-
-        if (!mounted) return;
-
-
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to load items."
-        );
-
-
-      } finally {
-
-        if (mounted) {
-          setLoading(false);
-        }
-
-      }
-    }
-
-
-    loadItems();
-
-
-    return () => {
-      mounted = false;
-    };
-
-  }, []);
-
-
-
-  const sortedItems = useMemo(
+  const items = useMemo(
     () =>
-      [...items].sort(
-        (a, b) =>
-          a.name.localeCompare(b.name)
+      [...(query.data ?? [])].sort((a, b) =>
+        a.name.localeCompare(b.name)
       ),
-    [items]
+    [query.data]
   );
 
-
   return {
-    items: sortedItems,
-    loading,
-    error,
+    items,
+    loading: query.isPending,
+    error: query.error?.message ?? null,
+    refetch: query.refetch,
   };
 }

@@ -1,10 +1,3 @@
-/**
- * ============================================================================
- * Mobalith
- * Hero Entity
- * ============================================================================
- */
-
 export type HeroRole =
   | "Tank"
   | "Fighter"
@@ -14,36 +7,28 @@ export type HeroRole =
   | "Support";
 
 export type Lane =
-  | "EXP"
   | "Gold"
+  | "EXP"
   | "Mid"
   | "Jungle"
   | "Roam";
+
+export type HeroTier = "S+" | "S" | "A" | "B" | "C";
 
 export type Difficulty =
   | "Easy"
   | "Medium"
   | "Hard";
 
-export type DamageType =
-  | "Physical"
-  | "Magic"
-  | "Hybrid";
-
-export type HeroTier =
-  | "S+"
-  | "S"
-  | "A"
-  | "B"
-  | "C";
-
-
-export interface HeroImages {
-  portrait: string;
-  square: string;
-  banner: string;
+export interface HeroSkill {
+  id: number;
+  slot: "Passive" | "Skill 1" | "Skill 2" | "Ultimate";
+  name: string;
+  description: string;
+  cooldown?: string;
+  manaCost?: string;
+  image: string;
 }
-
 
 export interface HeroStats {
   durability: number;
@@ -52,48 +37,48 @@ export interface HeroStats {
   difficulty: number;
 }
 
-
 export interface HeroRates {
   winRate: number;
   pickRate: number;
   banRate: number;
 }
 
-
-export interface HeroSkill {
-  name: string;
-  description: string;
-  type:
-    | "Passive"
-    | "Skill"
-    | "Ultimate";
-}
-
-
 export interface HeroBuildItem {
+  id: number;
   name: string;
   icon: string;
 }
-
 
 export interface HeroRelation {
   heroId: number;
   reason: string;
 }
 
+export interface HeroImages {
+  square: string;
+  portrait: string;
+  banner: string;
+}
 
 export interface Hero {
   id: number;
-  name: string;
+
   slug: string;
+
+  name: string;
+
   title: string;
 
   roles: HeroRole[];
+
   lanes: Lane[];
+
   specialty: string[];
 
-  damageType: DamageType;
+  damageType: "Physical" | "Magic" | "Hybrid";
+
   difficulty: Difficulty;
+
   tier: HeroTier;
 
   releaseDate?: string;
@@ -102,13 +87,13 @@ export interface Hero {
 
   stats: HeroStats;
 
-  rates?: HeroRates;
+  rates: HeroRates;
 
-  skills?: HeroSkill[];
+  skills: HeroSkill[];
 
   recommendedBuild?: HeroBuildItem[];
 
   counters?: HeroRelation[];
 
-  synergy?: HeroRelation[];
+  synergies?: HeroRelation[];
 }

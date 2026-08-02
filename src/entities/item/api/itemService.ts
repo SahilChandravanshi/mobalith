@@ -1,30 +1,13 @@
+import { fetchJson } from "@/shared/api/fetchJson";
+
 import type { Item } from "../model/item";
 
-
-const ITEMS_URL = "/data/items.json";
-
+const ITEMS_URL = `${import.meta.env.BASE_URL}data/items.json`;
 
 class ItemService {
-
   async getItems(): Promise<Item[]> {
-
-    const response = await fetch(ITEMS_URL);
-
-
-    if (!response.ok) {
-      throw new Error(
-        "Failed to fetch items data."
-      );
-    }
-
-
-    const data = await response.json();
-
-
-    return data as Item[];
+    return fetchJson<Item[]>(ITEMS_URL);
   }
-
 }
-
 
 export const itemService = new ItemService();

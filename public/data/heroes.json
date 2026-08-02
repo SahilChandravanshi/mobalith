@@ -1,102 +1,151 @@
 [
   {
     "id": 1,
-    "name": "Miya",
     "slug": "miya",
+    "name": "Miya",
     "title": "Moonlight Archer",
+
     "roles": ["Marksman"],
     "lanes": ["Gold"],
-    "specialty": ["Reap"],
+
+    "specialty": ["Reap", "Damage"],
+
     "damageType": "Physical",
+
     "difficulty": "Easy",
+
     "tier": "A",
+
+    "releaseDate": "2016-11-01",
+
     "images": {
+      "square": "/images/heroes/miya/icon.webp",
       "portrait": "/images/heroes/miya/portrait.webp",
-      "banner": "/images/heroes/miya/banner.webp",
-      "square": "/images/heroes/miya/icon.webp"
+      "banner": "/images/heroes/miya/banner.webp"
     },
+
     "stats": {
       "durability": 4,
       "offense": 9,
       "skillEffects": 5,
       "difficulty": 2
     },
+
     "rates": {
-      "winRate": 50.1,
-      "pickRate": 2.4,
-      "banRate": 0.3
+      "winRate": 51.7,
+      "pickRate": 2.9,
+      "banRate": 0.4
     },
-"skills": [
-  {
-    "name": "Moon Blessing",
-    "type": "Passive",
-    "description": "Miya gains attack speed after basic attacks."
+
+    "skills": [
+      {
+        "id": 1,
+        "slot": "Passive",
+        "name": "Moon Blessing",
+        "description": "Each Basic Attack grants Attack Speed. At full stacks Miya fires additional arrows.",
+        "image": "/images/heroes/miya/icon.webp"
+      },
+      {
+        "id": 2,
+        "slot": "Skill 1",
+        "name": "Moon Arrow",
+        "description": "Basic Attacks split into additional arrows.",
+        "cooldown": "11s",
+        "manaCost": "60",
+        "image": "/images/heroes/miya/icon.webp"
+      },
+      {
+        "id": 3,
+        "slot": "Skill 2",
+        "name": "Arrow of Eclipse",
+        "description": "Immobilizes enemies in the target area.",
+        "cooldown": "8s",
+        "manaCost": "90",
+        "image": "/images/heroes/miya/icon.webp"
+      },
+      {
+        "id": 4,
+        "slot": "Ultimate",
+        "name": "Hidden Moonlight",
+        "description": "Removes debuffs and enters Conceal.",
+        "cooldown": "38s",
+        "manaCost": "120",
+        "image": "/images/heroes/miya/icon.webp"
+      }
+    ],
+
+    "recommendedBuild": [
+      {
+        "id": 1,
+        "name": "Swift Boots",
+        "icon": "/images/items/swift-boots.webp"
+      },
+      {
+        "id": 2,
+        "name": "Blade of Despair",
+        "icon": "/images/items/blade-of-despair.webp"
+      }
+    ],
+
+    "counters": [
+      {
+        "heroId": 2,
+        "reason": "Strong engage."
+      }
+    ],
+
+    "synergies": [
+      {
+        "heroId": 2,
+        "reason": "Reliable frontline."
+      }
+    ]
   },
-  {
-    "name": "Fission Shot",
-    "type": "Skill",
-    "description": "Miya fires split arrows that deal damage to enemies."
-  },
-  {
-    "name": "Rain of Arrows",
-    "type": "Skill",
-    "description": "Miya launches arrows that slow and damage enemies."
-  },
-  {
-    "name": "Hidden Moonlight",
-    "type": "Ultimate",
-    "description": "Miya hides herself and gains movement speed."
-  }
-],
-"recommendedBuild": [
-  {
-    "name": "Swift Boots",
-    "icon": "/images/items/swift-boots.webp"
-  },
-  {
-    "name": "Haas Claws",
-    "icon": "/images/items/haas-claws.webp"
-  }
-],
-"counters": [
-  {
-    "heroId": 2,
-    "reason": "Tigreal can catch Miya with crowd control."
-  }
-],
-"synergy": [
-  {
-    "heroId": 2,
-    "reason": "Tigreal can protect Miya during fights."
-  }
-]
-  },
+
   {
     "id": 2,
-    "name": "Tigreal",
     "slug": "tigreal",
+    "name": "Tigreal",
     "title": "Warrior of Dawn",
+
     "roles": ["Tank"],
     "lanes": ["Roam"],
+
     "specialty": ["Crowd Control", "Initiator"],
+
     "damageType": "Physical",
-    "difficulty": "Easy",
+
+    "difficulty": "Medium",
+
     "tier": "A",
+
+    "releaseDate": "2016-11-01",
+
     "images": {
+      "square": "/images/heroes/tigreal/icon.webp",
       "portrait": "/images/heroes/tigreal/portrait.webp",
-      "banner": "/images/heroes/tigreal/banner.webp",
-      "square": "/images/heroes/tigreal/icon.webp"
+      "banner": "/images/heroes/tigreal/banner.webp"
     },
+
     "stats": {
       "durability": 10,
       "offense": 3,
       "skillEffects": 8,
-      "difficulty": 3
+      "difficulty": 4
     },
+
     "rates": {
-      "winRate": 51.8,
-      "pickRate": 3.1,
-      "banRate": 1.5
-    }
+      "winRate": 50.8,
+      "pickRate": 2.4,
+      "banRate": 0.9
+    },
+
+    "skills": [],
+
+    "recommendedBuild": [],
+
+    "counters": [],
+
+    "synergies": []
   }
 ]

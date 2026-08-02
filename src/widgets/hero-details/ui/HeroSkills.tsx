@@ -1,47 +1,94 @@
-import type { HeroSkill } from "@/entities/hero/model/hero";
+import { useState, useEffect } from "react";
+
+import type { Hero } from "@/entities/hero";
 
 import { Card } from "@/shared/ui/Card";
+import { Button } from "@/shared/ui/Button";
 
 interface HeroSkillsProps {
-  skills?: HeroSkill[];
+  hero: Hero;
 }
 
 export function HeroSkills({
-  skills,
+  hero,
 }: HeroSkillsProps) {
-  if (!skills || skills.length === 0) {
-    return null;
+  const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    setSelected(0);
+  }, [hero.id]);
+
+  if (hero.skills.length === 0) {
+    return (
+      <Card>
+        <p className="text-muted">
+          Skills for this hero haven't been added yet.
+        </p>
+      </Card>
+    );
   }
 
+  const skill = hero.skills[selected];
+
   return (
-    <Card title="Skills">
-      <div className="space-y-4">
-        {skills.map((skill) => (
-          <div
-            key={skill.name}
-            className="
-              border
-              border-ink/10
-              bg-inset/50
-              p-4
-            "
+    <Card>
+
+      <div className="flex flex-wrap gap-3">
+
+        {hero.skills.map((item, index) => (
+          <Button
+            key={item.id}
+            variant={
+              selected === index
+                ? "primary"
+                : "secondary"
+            }
+            onClick={() => setSelected(index)}
           >
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="font-semibold">
-                {skill.name}
-              </h3>
-
-              <span className="text-xs text-muted">
-                {skill.type}
-              </span>
-            </div>
-
-            <p className="mt-2 text-sm leading-6 text-muted">
-              {skill.description}
-            </p>
-          </div>
+            {item.slot}
+          </Button>
         ))}
+
       </div>
+
+      <div className="mt-6 flex gap-6">
+
+        <img
+          src={skill.image}
+          alt={skill.name}
+          className="h-20 w-20 rounded-xl border border-ink/10"
+        />
+
+        <div className="flex-1">
+
+          <h3 className="text-2xl font-bold">
+            {skill.name}
+          </h3>
+
+          <p className="mt-3 leading-7 text-muted">
+            {skill.description}
+          </p>
+
+          <div className="mt-5 flex flex-wrap gap-6 text-sm text-muted">
+
+            {skill.cooldown && (
+              <span>
+                <strong>Cooldown:</strong> {skill.cooldown}
+              </span>
+            )}
+
+            {skill.manaCost && (
+              <span>
+                <strong>Mana:</strong> {skill.manaCost}
+              </span>
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+
     </Card>
   );
 }

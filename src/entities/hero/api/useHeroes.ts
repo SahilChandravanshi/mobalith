@@ -1,52 +1,30 @@
-import { useEffect, useMemo, useState } from "react";
-import { heroService } from "./heroService";
-import type { Hero } from "../model/hero";
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import { queryKeys } from "@/shared/api/queryKeys";
+
+import { heroRepository } from "../repository/heroRepository";
 
 export function useHeroes() {
-  const [heroes, setHeroes] = useState<Hero[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const query = useQuery({
+    queryKey: queryKeys.heroes,
+    queryFn: () => heroRepository.getHeroes(),
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 
-  useEffect(() => {
-    let mounted = true;
-
-    async function loadHeroes() {
-      try {
-        setLoading(true);
-        const data = await heroService.getHeroes();
-
-        if (!mounted) return;
-
-        setHeroes(data);
-        setError(null);
-      } catch (err) {
-        if (!mounted) return;
-
-        setError(
-          err instanceof Error ? err.message : "Failed to load heroes."
-        );
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    loadHeroes();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const sortedHeroes = useMemo(
-    () => [...heroes].sort((a, b) => a.name.localeCompare(b.name)),
-    [heroes]
+  const heroes = useMemo(
+    () =>
+      [...(query.data ?? [])].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      ),
+    [query.data]
   );
 
   return {
-    heroes: sortedHeroes,
-    loading,
-    error,
+    heroes,
+    loading: query.isPending,
+    error: query.error?.message ?? null,
+    refetch: query.refetch,
   };
 }
