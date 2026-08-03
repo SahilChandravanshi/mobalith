@@ -43,6 +43,20 @@ export interface HeroRates {
   banRate: number;
 }
 
+export interface HeroSkin {
+  id: number;
+  name: string;
+  rarity:
+    | "Basic"
+    | "Elite"
+    | "Special"
+    | "Epic"
+    | "Collector"
+    | "Legend";
+
+  image: string;
+}
+
 export interface HeroBuildItem {
   id: number;
   name: string;
@@ -92,6 +106,8 @@ export interface Hero {
   rates: HeroRates;
 
   skills: HeroSkill[];
+
+  skins?: HeroSkin[];
 
   recommendedBuild?: HeroBuildItem[];
 

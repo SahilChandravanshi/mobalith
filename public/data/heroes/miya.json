@@ -1,0 +1,38 @@
+  {
+    "id": 1,
+    "slug": "miya",
+    "name": "Miya",
+    "title": "Moonlight Archer",
+
+    "roles": ["Marksman"],
+    "lanes": ["Gold"],
+
+    "specialty": ["Reap", "Damage"],
+
+    "damageType": "Physical",
+
+    "difficulty": "Easy",
+
+    "tier": "A",
+
+    "releaseDate": "2016-11-01",
+
+    "images": {
+      "square": "/images/heroes/miya/icon.webp",
+      "portrait": "/images/heroes/miya/portrait.webp",
+      "banner": "/images/heroes/miya/banner.webp"
+    },
+
+    "stats": {
+      "durability": 4,
+      "offense": 9,
+      "skillEffects": 5,
+      "difficulty": 2
+    },
+
+    "rates": {
+      "winRate": 51.7,
+      "pickRate": 2.9,
+      "banRate": 0.4
+    }
+  }

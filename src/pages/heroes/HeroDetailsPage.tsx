@@ -2,7 +2,10 @@ import { useParams } from "react-router-dom";
 
 import { useHeroDetails } from "@/entities/hero/hooks/useHeroDetails";
 
-import { ErrorState, Skeleton } from "@/shared/ui/FeedbackStates";
+import {
+  ErrorState,
+  Skeleton,
+} from "@/shared/ui/FeedbackStates";
 import { Section } from "@/shared/ui/layout/Section";
 
 import { HeroBanner } from "@/widgets/hero-details/ui/HeroBanner";
@@ -12,6 +15,7 @@ import { HeroSkills } from "@/widgets/hero-details/ui/HeroSkills";
 import { HeroBuild } from "@/widgets/hero-details/ui/HeroBuild";
 import { HeroCounters } from "@/widgets/hero-details/ui/HeroCounters";
 import { HeroSynergy } from "@/widgets/hero-details/ui/HeroSynergy";
+import { HeroSkins } from "@/widgets/hero-details/ui/HeroSkins";
 
 export default function HeroDetailsPage() {
   const { slug } = useParams();
@@ -74,6 +78,13 @@ export default function HeroDetailsPage() {
             description="Heroes that work especially well together."
           >
             <HeroSynergy hero={hero} />
+          </Section>
+
+          <Section
+            title="Skins"
+            description="All available skins for this hero."
+          >
+            <HeroSkins hero={hero} />
           </Section>
         </div>
 

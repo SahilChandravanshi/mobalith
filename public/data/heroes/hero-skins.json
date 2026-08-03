@@ -1,0 +1,25 @@
+[
+  {
+    "heroId": 1,
+    "skins": [
+      {
+        "id": 1,
+        "name": "Default",
+        "rarity": "Basic",
+        "image": "/images/heroes/miya/skins/default.webp"
+      },
+      {
+        "id": 2,
+        "name": "Captain Thorns",
+        "rarity": "Elite",
+        "image": "/images/heroes/miya/skins/captain-thorns.webp"
+      },
+      {
+        "id": 3,
+        "name": "Honor",
+        "rarity": "Special",
+        "image": "/images/heroes/miya/skins/honor.webp"
+      }
+    ]
+  }
+]
