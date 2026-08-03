@@ -10,7 +10,8 @@ interface HeroSkinsEntry {
   skins: HeroSkin[];
 }
 
-const SKINS_URL = "/data/heroes/hero-skins.json";
+const SKINS_URL =
+  `${import.meta.env.BASE_URL}data/heroes/hero-skins.json`;
 
 class HeroDetailsRepository {
   async getHero(
@@ -22,13 +23,17 @@ class HeroDetailsRepository {
       return undefined;
     }
 
-    const skins = await fetch(SKINS_URL).then((r) =>
-      r.json()
-    );
+    const response = await fetch(SKINS_URL);
 
-    const skinEntry = (
-      skins as HeroSkinsEntry[]
-    ).find((entry) => entry.heroId === hero.id);
+    if (!response.ok) {
+      throw new Error("Failed to fetch hero skins.");
+    }
+
+    const skins = (await response.json()) as HeroSkinsEntry[];
+
+    const skinEntry = skins.find(
+      (entry) => entry.heroId === hero.id
+    );
 
     return {
       ...hero,
