@@ -1,6 +1,7 @@
 import type { Hero } from "@/entities/hero/model/hero";
 
 import { Card } from "@/shared/ui/Card";
+import { Badge } from "@/shared/ui/Badge";
 
 interface HeroBuildProps {
   hero: Hero;
@@ -14,25 +15,31 @@ export function HeroBuild({
   if (build.length === 0) {
     return null;
   }
-console.log(build);
+
   return (
     <Card title="Recommended Build">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+
         {build.map((item) => (
-          <div
+          <article
             key={item.id}
             className="
               angular-frame
               border
               border-ink/10
-              bg-inset/50
+              bg-inset/40
               p-4
-              transition-colors
+              transition-all
+              duration-200
               hover:border-brand/30
               hover:bg-elevated
+              hover:-translate-y-1
             "
           >
-            <div className="flex items-center gap-4">
+
+            <div className="flex items-start gap-4">
+
               <img
                 src={item.icon}
                 alt={item.name}
@@ -46,28 +53,39 @@ console.log(build);
                   bg-surface
                   object-contain
                   p-2
+                  shrink-0
                 "
               />
 
               <div className="min-w-0 flex-1">
-                <h3 className="truncate font-semibold">
+
+                <h3 className="truncate text-base font-bold">
                   {item.name}
                 </h3>
 
-                <p className="mt-1 text-sm font-medium text-gold">
-                  {item.price.toLocaleString()} Gold
-                </p>
+                <div className="mt-2">
+                  <Badge tone="gold">
+                    {item.price.toLocaleString()} Gold
+                  </Badge>
+                </div>
+
               </div>
+
             </div>
 
-            <div className="mt-4 border-t border-ink/10 pt-3">
-              <p className="whitespace-pre-line text-sm text-muted">
+            <div className="mt-4 border-t border-ink/10 pt-4">
+
+              <p className="whitespace-pre-line text-sm leading-6 text-muted">
                 {item.description}
               </p>
+
             </div>
-          </div>
+
+          </article>
         ))}
+
       </div>
+
     </Card>
   );
 }

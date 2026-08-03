@@ -1,8 +1,6 @@
 import type { Hero } from "@/entities/hero";
+
 import { useHeroes } from "@/entities/hero";
-
-import { Card } from "@/shared/ui/Card";
-
 import { HeroRelationCard } from "./HeroRelationCard";
 
 interface HeroCountersProps {
@@ -21,26 +19,24 @@ export function HeroCounters({
   }
 
   return (
-    <Card title="Counters">
-      <div className="grid gap-3">
-        {counters.map((counter) => {
-          const enemy = heroes.find(
-            (h) => h.id === counter.heroId,
-          );
+    <div className="grid gap-4 lg:grid-cols-2">
+      {counters.map((counter) => {
+        const relatedHero = heroes.find(
+          (item) => item.id === counter.heroId
+        );
 
-          if (!enemy) {
-            return null;
-          }
+        if (!relatedHero) {
+          return null;
+        }
 
-          return (
-            <HeroRelationCard
-              key={enemy.id}
-              hero={enemy}
-              reason={counter.reason}
-            />
-          );
-        })}
-      </div>
-    </Card>
+        return (
+          <HeroRelationCard
+            key={relatedHero.id}
+            hero={relatedHero}
+            reason={counter.reason}
+          />
+        );
+      })}
+    </div>
   );
 }

@@ -7,26 +7,52 @@ interface HeroAttributesProps {
   hero: Hero;
 }
 
-function Row({
-  label,
-  value,
-}: {
+interface AttributeRowProps {
   label: string;
   value: number;
-}) {
+  color: string;
+}
+
+function AttributeRow({
+  label,
+  value,
+  color,
+}: AttributeRowProps) {
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium">
-          {label}
+    <div
+      className="
+        angular-frame
+        border
+        border-ink/10
+        bg-inset/40
+        p-4
+      "
+    >
+      <div className="mb-3 flex items-center justify-between">
+
+        <div>
+          <p className="text-sm font-semibold">
+            {label}
+          </p>
+
+          <p className="text-xs text-muted">
+            Hero Attribute
+          </p>
+        </div>
+
+        <span
+          className="text-2xl font-black"
+          style={{ color }}
+        >
+          {value}
         </span>
 
-        <span className="text-sm text-muted">
-          {value}/10
-        </span>
       </div>
 
-      <ProgressBar value={value} />
+      <ProgressBar
+        value={value}
+        color={color}
+      />
     </div>
   );
 }
@@ -36,29 +62,45 @@ export function HeroAttributes({
 }: HeroAttributesProps) {
   return (
     <Card>
-      <div className="space-y-6">
 
-        <Row
+      <div className="mb-6">
+        <h3 className="text-xl font-bold">
+          Attribute Distribution
+        </h3>
+
+        <p className="mt-1 text-sm text-muted">
+          Overall strengths of this hero.
+        </p>
+      </div>
+
+      <div className="grid gap-4">
+
+        <AttributeRow
           label="Durability"
           value={hero.stats.durability}
+          color="#3b82f6"
         />
 
-        <Row
+        <AttributeRow
           label="Offense"
           value={hero.stats.offense}
+          color="#ef4444"
         />
 
-        <Row
+        <AttributeRow
           label="Skill Effects"
           value={hero.stats.skillEffects}
+          color="#8b5cf6"
         />
 
-        <Row
+        <AttributeRow
           label="Difficulty"
           value={hero.stats.difficulty}
+          color="#f59e0b"
         />
 
       </div>
+
     </Card>
   );
 }

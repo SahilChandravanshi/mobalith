@@ -1,11 +1,13 @@
 interface ProgressBarProps {
   value: number;
   max?: number;
+  color?: string;
 }
 
 export function ProgressBar({
   value,
   max = 10,
+  color,
 }: ProgressBarProps) {
   const percentage = Math.min(
     100,
@@ -13,11 +15,21 @@ export function ProgressBar({
   );
 
   return (
-    <div className="h-2 overflow-hidden rounded-full bg-elevated">
+    <div
+      className="
+        angular-frame
+        h-3
+        overflow-hidden
+        border
+        border-ink/10
+        bg-inset
+      "
+    >
       <div
-        className="h-full bg-brand transition-all duration-500"
+        className="h-full transition-all duration-700 ease-out"
         style={{
           width: `${percentage}%`,
+          backgroundColor: color ?? "rgb(var(--color-brand))",
         }}
       />
     </div>

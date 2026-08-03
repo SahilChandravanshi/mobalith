@@ -6,7 +6,6 @@ import { ErrorState, Skeleton } from "@/shared/ui/FeedbackStates";
 import { Section } from "@/shared/ui/layout/Section";
 
 import { HeroBanner } from "@/widgets/hero-details/ui/HeroBanner";
-import { HeroRates } from "@/widgets/hero-details/ui/HeroRates";
 import { HeroAttributes } from "@/widgets/hero-details/ui/HeroAttributes";
 import { HeroStats } from "@/widgets/hero-details/ui/HeroStats";
 import { HeroSkills } from "@/widgets/hero-details/ui/HeroSkills";
@@ -49,10 +48,6 @@ export default function HeroDetailsPage() {
 
       <div className="grid gap-8 xl:grid-cols-[2fr_1fr]">
         <div className="space-y-8">
-          <Section title="Overview">
-            <HeroRates hero={hero} />
-          </Section>
-
           <Section
             title="Skills"
             description="Passive and active abilities."
