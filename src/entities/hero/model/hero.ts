@@ -68,6 +68,7 @@ export interface HeroBuildItem {
 export interface HeroRelation {
   heroId: number;
   reason: string;
+  score?: number;
 }
 
 export interface HeroImages {
@@ -111,7 +112,18 @@ export interface Hero {
 
   recommendedBuild?: HeroBuildItem[];
 
+  /**
+   * Heroes this hero performs well against.
+   */
   counters?: HeroRelation[];
 
+  /**
+   * Heroes this hero performs poorly against.
+   */
+  counteredBy?: HeroRelation[];
+
+  /**
+   * Heroes that work well with this hero.
+   */
   synergies?: HeroRelation[];
 }

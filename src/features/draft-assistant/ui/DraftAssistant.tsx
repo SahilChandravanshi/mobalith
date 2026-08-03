@@ -1,11 +1,19 @@
 import { useState } from 'react'
+import { useEffect } from 'react'
+
 import type { Hero } from '@/entities/hero/model/hero'
-import { HeroPicker } from '@/features/hero-picker/ui/HeroPicker'
+
+import { useHeroes } from '@/entities/hero/api/useHeroes'
+
 import { Button } from '@/shared/ui/Button'
 import { Card } from '@/shared/ui/Card'
-import { Modal } from '@/shared/ui/Overlay'
-import { useHeroes } from '@/entities/hero/api/useHeroes'
-import { getRecommendations } from "@/features/draft-assistant/model/recommendationEngine";
+
+import {
+  getRecommendations,
+  type HeroRecommendation,
+} from '@/features/draft-assistant/model/recommendationEngine'
+
+import { HeroPickerModal } from './HeroPickerModal'
 
 function TeamSection({
   title,
@@ -67,7 +75,7 @@ function TeamSection({
 }
 
 export function DraftAssistant() {
-  const [pickerOpen, setPickerOpen] = useState(false)
+  const { heroes } = useHeroes()
 
   const [enemyTeam, setEnemyTeam] = useState<(Hero | null)[]>(
     Array(5).fill(null),
@@ -75,41 +83,24 @@ export function DraftAssistant() {
 
   const [yourTeam, setYourTeam] = useState<(Hero | null)[]>(Array(5).fill(null))
 
+  const [pickerOpen, setPickerOpen] = useState(false)
+
   const [activeTeam, setActiveTeam] = useState<'enemy' | 'ally'>('enemy')
 
-  const [activeSlot, setActiveSlot] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  const { heroes } = useHeroes()
+  const [recommendations, setRecommendations] = useState<HeroRecommendation[]>(
+    [],
+  )
 
-  const recommendations = getRecommendations(heroes, enemyTeam, yourTeam)
+  useEffect(() => {
+    getRecommendations(heroes, enemyTeam, yourTeam).then(setRecommendations)
+  }, [heroes, enemyTeam, yourTeam])
 
   function openPicker(team: 'enemy' | 'ally', slot: number) {
     setActiveTeam(team)
-    setActiveSlot(slot)
+    setActiveIndex(slot)
     setPickerOpen(true)
-  }
-
-  function handleHeroSelect(hero: Hero) {
-    const duplicate = [...enemyTeam, ...yourTeam].some(
-      (picked) => picked?.id === hero.id,
-    )
-
-    if (duplicate) {
-      setPickerOpen(false)
-      return
-    }
-
-    if (activeTeam === 'enemy') {
-      const next = [...enemyTeam]
-      next[activeSlot] = hero
-      setEnemyTeam(next)
-    } else {
-      const next = [...yourTeam]
-      next[activeSlot] = hero
-      setYourTeam(next)
-    }
-
-    setPickerOpen(false)
   }
 
   function clearDraft() {
@@ -167,20 +158,20 @@ export function DraftAssistant() {
               <div
                 key={item.hero.id}
                 className="
-            angular-frame
-            flex
-            items-center
-            gap-4
-            border
-            border-ink/10
-            bg-inset/50
-            p-3
-          "
+                  angular-frame
+                  flex
+                  items-center
+                  gap-4
+                  border
+                  border-ink/10
+                  bg-inset/50
+                  p-3
+                "
               >
                 <img
                   src={item.hero.images.square}
                   alt={item.hero.name}
-                  className="h-14 w-14 angular-frame object-cover"
+                  className="angular-frame h-14 w-14 object-cover"
                 />
 
                 <div className="min-w-0 flex-1">
@@ -201,13 +192,30 @@ export function DraftAssistant() {
           </div>
         )}
       </Card>
-      <Modal
+
+      <HeroPickerModal
         open={pickerOpen}
+        heroes={heroes}
+        pickedHeroes={[...enemyTeam, ...yourTeam]}
         onClose={() => setPickerOpen(false)}
-        title="Select Hero"
-      >
-        <HeroPicker onSelect={handleHeroSelect} />
-      </Modal>
+        onSelect={(hero) => {
+          if (activeTeam === 'enemy') {
+            setEnemyTeam((prev) => {
+              const next = [...prev]
+              next[activeIndex] = hero
+              return next
+            })
+          } else {
+            setYourTeam((prev) => {
+              const next = [...prev]
+              next[activeIndex] = hero
+              return next
+            })
+          }
+
+          setPickerOpen(false)
+        }}
+      />
     </div>
   )
 }

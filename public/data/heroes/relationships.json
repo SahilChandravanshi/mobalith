@@ -1,0 +1,41 @@
+[
+  {
+    "heroId": 1,
+    "counters": [
+      {
+        "heroId": 19,
+        "reason": "Outranges and outscales in late game.",
+        "score": 20
+      },
+      {
+        "heroId": 40,
+        "reason": "Can kite and shred tanks.",
+        "score": 15
+      }
+    ],
+    "counteredBy": [
+      {
+        "heroId": 23,
+        "reason": "High burst and mobility.",
+        "score": 30
+      },
+      {
+        "heroId": 66,
+        "reason": "Strong dive potential.",
+        "score": 25
+      }
+    ],
+    "synergies": [
+      {
+        "heroId": 74,
+        "reason": "Excellent peel and protection.",
+        "score": 25
+      },
+      {
+        "heroId": 6,
+        "reason": "Reliable crowd control for free damage.",
+        "score": 20
+      }
+    ]
+  }
+]
