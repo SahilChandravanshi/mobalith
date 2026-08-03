@@ -1,5 +1,6 @@
 export type HeroSort =
   | "name"
+  | "tier"
   | "winRate"
   | "pickRate"
   | "banRate"

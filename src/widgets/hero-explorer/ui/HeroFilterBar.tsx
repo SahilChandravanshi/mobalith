@@ -49,7 +49,8 @@ const SORT_OPTIONS: {
   value: HeroSort;
   label: string;
 }[] = [
-  { value: "name", label: "Name" },
+  { value: "name", label: "Name (A–Z)" },
+  { value: "tier", label: "Tier" },
   { value: "winRate", label: "Win Rate" },
   { value: "pickRate", label: "Pick Rate" },
   { value: "banRate", label: "Ban Rate" },
@@ -116,9 +117,7 @@ export function HeroFilterBar({
 }: HeroFilterBarProps) {
   return (
     <section className="card space-y-6">
-
       <div className="grid gap-6 lg:grid-cols-2">
-
         <ChipGroup
           title="Roles"
           values={ROLES}
@@ -158,10 +157,12 @@ export function HeroFilterBar({
           filterKey="difficulties"
           updateFilter={updateFilter}
         />
+      </div>
 
-        <div className="space-y-2">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-muted">
-            Sort
+      <div className="flex flex-col gap-4 border-t border-ink/10 pt-6 sm:flex-row sm:items-end sm:justify-between">
+        <div className="w-full sm:max-w-xs">
+          <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-muted">
+            Sort By
           </h3>
 
           <select
@@ -183,18 +184,16 @@ export function HeroFilterBar({
               </option>
             ))}
           </select>
-
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={resetFilters}
-          >
-            Clear Filters
-          </Button>
         </div>
 
+        <Button
+          variant="secondary"
+          type="button"
+          onClick={resetFilters}
+        >
+          Clear Filters
+        </Button>
       </div>
-
     </section>
   );
 }

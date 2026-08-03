@@ -7,6 +7,7 @@ import { FeaturePage } from "@/pages/FeaturePage";
 import { HeroesPage } from "@/pages/heroes/HeroesPage";
 import HeroDetailsPage from "@/pages/heroes/HeroDetailsPage";
 import { ItemsPage } from "@/pages/items/ItemsPage";
+import DraftAssistantPage from "@/pages/draft/DraftAssistantPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 
 import { featureRoutes } from "@/shared/config/navigation";
@@ -42,6 +43,13 @@ export const router = createHashRouter([
           return {
             path,
             element: <ItemsPage />,
+          };
+        }
+
+        if (path === "draft-assistant") {
+          return {
+            path,
+            element: <DraftAssistantPage />,
           };
         }
 

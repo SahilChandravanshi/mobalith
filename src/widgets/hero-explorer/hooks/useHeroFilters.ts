@@ -7,20 +7,36 @@ import {
   type HeroFilters,
 } from "../model/filters";
 
-export function useHeroFilters(heroes: Hero[]) {
+const tierRank = {
+  "S+": 5,
+  S: 4,
+  A: 3,
+  B: 2,
+  C: 1,
+} as const;
+
+export function useHeroFilters(
+  heroes: Hero[]
+) {
   const [filters, setFilters] =
     useState<HeroFilters>(DEFAULT_FILTERS);
 
   const filteredHeroes = useMemo(() => {
     let result = [...heroes];
 
-    if (filters.search) {
-      const query = filters.search.toLowerCase();
+    if (filters.search.trim()) {
+      const query = filters.search
+        .trim()
+        .toLowerCase();
 
       result = result.filter(
         (hero) =>
-          hero.name.toLowerCase().includes(query) ||
-          hero.title.toLowerCase().includes(query)
+          hero.name
+            .toLowerCase()
+            .includes(query) ||
+          hero.title
+            .toLowerCase()
+            .includes(query)
       );
     }
 
@@ -62,42 +78,65 @@ export function useHeroFilters(heroes: Hero[]) {
       );
     }
 
-    result.sort((a, b) => {
-      switch (filters.sort) {
-        case "winRate":
-          return (
-            (b.rates?.winRate ?? 0) -
-            (a.rates?.winRate ?? 0)
-          );
+    switch (filters.sort) {
+      case "name":
+        result.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        break;
 
-        case "pickRate":
-          return (
-            (b.rates?.pickRate ?? 0) -
-            (a.rates?.pickRate ?? 0)
-          );
+      case "tier":
+        result.sort(
+          (a, b) =>
+            tierRank[b.tier] -
+            tierRank[a.tier]
+        );
+        break;
 
-        case "banRate":
-          return (
-            (b.rates?.banRate ?? 0) -
-            (a.rates?.banRate ?? 0)
-          );
+      case "winRate":
+        result.sort(
+          (a, b) =>
+            b.rates.winRate -
+            a.rates.winRate
+        );
+        break;
 
-        case "releaseDate":
-          return (
-            (a.releaseDate ?? "").localeCompare(
-              b.releaseDate ?? ""
-            )
-          );
+      case "pickRate":
+        result.sort(
+          (a, b) =>
+            b.rates.pickRate -
+            a.rates.pickRate
+        );
+        break;
 
-        default:
-          return a.name.localeCompare(b.name);
-      }
-    });
+      case "banRate":
+        result.sort(
+          (a, b) =>
+            b.rates.banRate -
+            a.rates.banRate
+        );
+        break;
+
+      case "releaseDate":
+        result.sort((a, b) =>
+          (b.releaseDate ?? "").localeCompare(
+            a.releaseDate ?? ""
+          )
+        );
+        break;
+
+      default:
+        result.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+    }
 
     return result;
   }, [heroes, filters]);
 
-  function updateFilter<K extends keyof HeroFilters>(
+  function updateFilter<
+    K extends keyof HeroFilters,
+  >(
     key: K,
     value: HeroFilters[K]
   ) {
