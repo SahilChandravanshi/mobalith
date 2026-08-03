@@ -1,17 +1,19 @@
-import type { HeroRelationships } from '../model/relationship'
+import type { HeroRelationships } from "../model/relationship";
 
-const RELATIONSHIPS_URL = '/data/heroes/relationships.json'
+const RELATIONSHIPS_URL =
+  `${import.meta.env.BASE_URL}data/heroes/relationships.json`;
 
 class RelationshipService {
   async getRelationships(): Promise<HeroRelationships[]> {
-    const response = await fetch(RELATIONSHIPS_URL)
+    const response = await fetch(RELATIONSHIPS_URL);
 
     if (!response.ok) {
-      throw new Error('Failed to fetch hero relationships.')
+      throw new Error("Failed to fetch hero relationships.");
     }
 
-    return response.json()
+    return response.json();
   }
 }
 
-export const relationshipService = new RelationshipService()
+export const relationshipService =
+  new RelationshipService();

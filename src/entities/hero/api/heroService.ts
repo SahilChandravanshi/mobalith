@@ -1,6 +1,6 @@
 import type { Hero } from "../model/hero";
 
-const HEROES_URL = "/data/heroes/heroes.json";
+const HEROES_URL = `${import.meta.env.BASE_URL}data/heroes/heroes.json`;
 
 class HeroService {
   async getHeroes(): Promise<Hero[]> {
@@ -10,9 +10,7 @@ class HeroService {
       throw new Error("Failed to fetch heroes data.");
     }
 
-    const data = await response.json();
-
-    return data as Hero[];
+    return response.json();
   }
 }
 
