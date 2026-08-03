@@ -1,6 +1,9 @@
-import type { Hero } from "@/entities/hero/model/hero";
+import type { Hero } from "@/entities/hero";
+import { useHeroes } from "@/entities/hero";
 
 import { Card } from "@/shared/ui/Card";
+
+import { HeroRelationCard } from "./HeroRelationCard";
 
 interface HeroSynergyProps {
   hero: Hero;
@@ -9,34 +12,34 @@ interface HeroSynergyProps {
 export function HeroSynergy({
   hero,
 }: HeroSynergyProps) {
-  const synergy = hero.synergies;
+  const { heroes } = useHeroes();
 
-  if (!synergy || synergy.length === 0) {
+  const synergies = hero.synergies ?? [];
+
+  if (synergies.length === 0) {
     return null;
   }
 
   return (
-    <Card title="Synergy">
-      <div className="space-y-3">
-        {synergy.map((ally) => (
-          <div
-            key={ally.heroId}
-            className="
-              border
-              border-ink/10
-              bg-inset/50
-              p-4
-            "
-          >
-            <p className="font-semibold">
-              Hero ID: {ally.heroId}
-            </p>
+    <Card title="Best Synergy">
+      <div className="grid gap-3">
+        {synergies.map((ally) => {
+          const partner = heroes.find(
+            (h) => h.id === ally.heroId,
+          );
 
-            <p className="mt-1 text-sm text-muted">
-              {ally.reason}
-            </p>
-          </div>
-        ))}
+          if (!partner) {
+            return null;
+          }
+
+          return (
+            <HeroRelationCard
+              key={partner.id}
+              hero={partner}
+              reason={ally.reason}
+            />
+          );
+        })}
       </div>
     </Card>
   );

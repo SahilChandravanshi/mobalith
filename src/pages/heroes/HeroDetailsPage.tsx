@@ -1,7 +1,6 @@
-import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
-import { useHeroes } from "@/entities/hero";
+import { useHeroDetails } from "@/entities/hero/hooks/useHeroDetails";
 
 import { ErrorState, Skeleton } from "@/shared/ui/FeedbackStates";
 import { Section } from "@/shared/ui/layout/Section";
@@ -18,12 +17,7 @@ import { HeroSynergy } from "@/widgets/hero-details/ui/HeroSynergy";
 export default function HeroDetailsPage() {
   const { slug } = useParams();
 
-  const { heroes, loading, error } = useHeroes();
-
-  const hero = useMemo(
-    () => heroes.find((hero) => hero.slug === slug),
-    [heroes, slug]
-  );
+  const { hero, loading, error } = useHeroDetails(slug);
 
   if (loading) {
     return (

@@ -1,27 +1,33 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { heroRepository } from "../repository/heroRepository";
 import type { Hero } from "../model/hero";
+import { heroDetailsRepository } from "../repository/heroDetailsRepository";
 
-export function useHeroes() {
-  const [heroes, setHeroes] = useState<Hero[]>([]);
+export function useHeroDetails(slug?: string) {
+  const [hero, setHero] = useState<Hero>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (slug === undefined) {
+      setHero(undefined);
+      setLoading(false);
+      return;
+    }
+
     let mounted = true;
 
-    async function loadHeroes() {
+    async function loadHero(currentSlug: string) {
       try {
         setLoading(true);
 
-        const data = await heroRepository.getAll();
+        const data = await heroDetailsRepository.getHero(currentSlug);
 
         if (!mounted) {
           return;
         }
 
-        setHeroes(data);
+        setHero(data);
         setError(null);
       } catch (err) {
         if (!mounted) {
@@ -31,7 +37,7 @@ export function useHeroes() {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to load heroes."
+            : "Failed to load hero."
         );
       } finally {
         if (mounted) {
@@ -40,23 +46,15 @@ export function useHeroes() {
       }
     }
 
-    loadHeroes();
+    loadHero(slug);
 
     return () => {
       mounted = false;
     };
-  }, []);
-
-  const sortedHeroes = useMemo(
-    () =>
-      [...heroes].sort((a, b) =>
-        a.name.localeCompare(b.name)
-      ),
-    [heroes]
-  );
+  }, [slug]);
 
   return {
-    heroes: sortedHeroes,
+    hero,
     loading,
     error,
   };

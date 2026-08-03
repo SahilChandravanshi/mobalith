@@ -1,79 +1,75 @@
-import type { Hero } from "@/entities/hero/model/hero";
+import type { Hero } from '@/entities/hero/model/hero'
 
-import { Badge } from "@/shared/ui/Badge";
-import { Card } from "@/shared/ui/Card";
+import { Badge } from '@/shared/ui/Badge'
+import { StatCard } from '@/shared/ui/StatCard'
 
 interface HeroBannerProps {
-  hero: Hero;
+  hero: Hero
 }
 
-export function HeroBanner({
-  hero,
-}: HeroBannerProps) {
+export function HeroBanner({ hero }: HeroBannerProps) {
   return (
-    <Card className="overflow-hidden p-0">
-
+    <section className="angular-frame overflow-hidden border border-ink/10 bg-surface">
       <div
-        className="relative h-72 bg-cover bg-center"
+        className="relative min-h-[420px] bg-cover bg-center"
         style={{
           backgroundImage: `url(${hero.images.banner})`,
         }}
       >
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/25" />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
-
-        <div className="relative flex h-full items-end gap-6 p-8">
-
+        <div className="relative flex h-full flex-col justify-end gap-8 p-8 lg:flex-row lg:items-end">
           <img
             src={hero.images.portrait}
             alt={hero.name}
-            className="h-44 rounded-xl border border-white/10"
+            className="h-64 w-auto angular-frame border border-white/10 object-cover"
           />
 
-          <div className="space-y-3">
-
+          <div className="flex-1 space-y-6">
             <div>
-
-              <h1 className="text-5xl font-black">
-                {hero.name}
-              </h1>
-
-              <p className="text-lg text-muted">
-                {hero.title}
+              <p className="text-sm uppercase tracking-[0.3em] text-brand">
+                Mobile Legends Hero
               </p>
 
+              <h1 className="mt-2 text-5xl font-black">{hero.name}</h1>
+
+              <p className="mt-2 text-xl text-muted">{hero.title}</p>
             </div>
 
             <div className="flex flex-wrap gap-2">
-
               {hero.roles.map((role) => (
-                <Badge
-                  key={role}
-                >
+                <Badge key={role} tone="brand">
                   {role}
                 </Badge>
               ))}
 
-              <Badge>
-                {hero.tier}
-              </Badge>
+              {hero.lanes.map((lane) => (
+                <Badge key={lane}>{lane}</Badge>
+              ))}
 
-              <Badge>
-                {hero.damageType}
-              </Badge>
+              {hero.specialty.map((specialty) => (
+                <Badge key={specialty} tone="success">
+                  {specialty}
+                </Badge>
+              ))}
 
-              <Badge>
-                {hero.difficulty}
-              </Badge>
+              <Badge tone="gold">Tier {hero.tier}</Badge>
 
+              <Badge>{hero.damageType}</Badge>
+
+              <Badge>{hero.difficulty}</Badge>
             </div>
 
+            <div className="grid grid-cols-3 gap-4">
+              <StatCard label="Win Rate" value={`${hero.rates.winRate}%`} />
+
+              <StatCard label="Pick Rate" value={`${hero.rates.pickRate}%`} />
+
+              <StatCard label="Ban Rate" value={`${hero.rates.banRate}%`} />
+            </div>
           </div>
-
         </div>
-
       </div>
-
-    </Card>
-  );
+    </section>
+  )
 }

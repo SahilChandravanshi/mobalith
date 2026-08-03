@@ -78,12 +78,44 @@
       {
         "id": 1,
         "name": "Swift Boots",
-        "icon": "/images/items/swift-boots.webp"
+        "icon": "/images/items/swift-boots.webp",
+        "description": "+40 Movement Speed\n+15% Attack Speed",
+        "price": 710
       },
       {
         "id": 2,
         "name": "Blade of Despair",
-        "icon": "/images/items/blade-of-despair.webp"
+        "icon": "/images/items/blade-of-despair.webp",
+        "description": "+160 Physical Attack",
+        "price": 3010
+      },
+      {
+        "id": 3,
+        "name": "Berserker's Fury",
+        "icon": "/images/items/berserkers-fury.webp",
+        "description": "+65 Physical Attack\n+25% Critical Chance",
+        "price": 2500
+      },
+      {
+        "id": 4,
+        "name": "Malefic Gun",
+        "icon": "/images/items/malefic-gun.webp",
+        "description": "+35 Physical Attack\n+20% Attack Speed",
+        "price": 2120
+      },
+      {
+        "id": 5,
+        "name": "Windtalker",
+        "icon": "/images/items/windtalker.webp",
+        "description": "+40% Attack Speed\n+20 Movement Speed",
+        "price": 1820
+      },
+      {
+        "id": 6,
+        "name": "Haas' Claws",
+        "icon": "/images/items/haas-claws.webp",
+        "description": "+30 Physical Attack\n+20% Lifesteal",
+        "price": 2020
       }
     ],
 

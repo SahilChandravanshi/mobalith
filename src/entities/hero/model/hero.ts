@@ -47,6 +47,8 @@ export interface HeroBuildItem {
   id: number;
   name: string;
   icon: string;
+  description: string;
+  price: number;
 }
 
 export interface HeroRelation {

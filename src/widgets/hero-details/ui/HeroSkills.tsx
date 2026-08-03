@@ -56,7 +56,13 @@ export function HeroSkills({
         <img
           src={skill.image}
           alt={skill.name}
-          className="h-20 w-20 rounded-xl border border-ink/10"
+          className="angular-frame
+    border
+    border-ink/10
+    bg-inset/50
+    p-4
+    transition-colors
+    hover:border-brand/30"
         />
 
         <div className="flex-1">

@@ -1,12 +1,18 @@
-import { fetchJson } from "@/shared/api/fetchJson";
-
 import type { Hero } from "../model/hero";
 
-const HEROES_URL = `${import.meta.env.BASE_URL}data/heroes.json`;
+const HEROES_URL = "/data/heroes/heroes.json";
 
 class HeroService {
   async getHeroes(): Promise<Hero[]> {
-    return fetchJson<Hero[]>(HEROES_URL);
+    const response = await fetch(HEROES_URL);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch heroes data.");
+    }
+
+    const data = await response.json();
+
+    return data as Hero[];
   }
 }
 
