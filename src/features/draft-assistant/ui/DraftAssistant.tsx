@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+import { DraftSlot } from './DraftSlot'
+
 import type { Hero, HeroRole } from '@/entities/hero/model/hero'
 
 import { useHeroes } from '@/entities/hero/api/useHeroes'
@@ -17,82 +19,6 @@ import {
 import { HeroPickerModal } from './HeroPickerModal'
 
 import { DRAFT_ORDER } from '@/features/draft-assistant/model/draftOrder'
-
-function TeamSection({
-  title,
-  heroes,
-  team,
-  onPick,
-  onRemove,
-}: {
-  title: string
-  heroes: (Hero | null)[]
-  team: 'enemy' | 'ally'
-  onPick: (team: 'enemy' | 'ally', slot: number) => void
-  onRemove: (team: 'enemy' | 'ally', slot: number) => void
-}) {
-  return (
-    <div className="space-y-4">
-      <p className="eyebrow">{title}</p>
-
-      <div className="grid grid-cols-5 gap-3">
-        {heroes.map((hero, index) => (
-          <div key={index} className="relative">
-            <button
-              type="button"
-              onClick={() => onPick(team, index)}
-              className="
-      angular-frame
-      aspect-square
-      w-full
-      overflow-hidden
-      border
-      border-ink/10
-      bg-inset
-      transition-all
-      hover:border-brand/40
-      hover:bg-elevated
-    "
-            >
-              {hero ? (
-                <div className="relative h-full w-full">
-                  <img
-                    src={hero.images.square}
-                    alt={hero.name}
-                    className="h-full w-full object-cover"
-                  />
-
-                  <div className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-0.5">
-                    <p className="truncate text-[10px] font-semibold text-white">
-                      {hero.name}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex h-full items-center justify-center text-3xl font-light text-muted">
-                  +
-                </div>
-              )}
-            </button>
-
-            {hero && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onRemove(team, index)
-                }}
-                className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full bg-red-600 text-xs font-bold text-white hover:bg-red-700"
-              >
-                ×
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
 
 export function DraftAssistant() {
   const { heroes } = useHeroes()
@@ -203,67 +129,160 @@ export function DraftAssistant() {
       </header>
 
       <Card>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="eyebrow">Current Turn</p>
+        <div className="space-y-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="eyebrow">Draft Phase</p>
 
-            <h2 className="mt-1 text-xl font-bold capitalize">
-              {DRAFT_ORDER[draftStep]?.replace('-', ' ')}
-            </h2>
+              <h2 className="mt-1 text-2xl font-black tracking-wide">
+                {currentStep
+                  ?.replace('blue', 'Blue')
+                  .replace('red', 'Red')
+                  .replace('-', ' ')}
+              </h2>
+            </div>
+
+            <div className="text-right">
+              <p className="text-xs uppercase tracking-wider text-muted">
+                Progress
+              </p>
+
+              <p className="text-3xl font-black text-brand">{draftStep + 1}</p>
+            </div>
           </div>
 
-          <div className="text-right">
-            <p className="text-sm text-muted">Step</p>
+          <div className="h-2 overflow-hidden rounded-full bg-inset">
+            <div
+              className="h-full bg-brand transition-all duration-500"
+              style={{
+                width: `${((draftStep + 1) / DRAFT_ORDER.length) * 100}%`,
+              }}
+            />
+          </div>
 
-            <p className="text-2xl font-black text-brand">
-              {draftStep + 1}/{DRAFT_ORDER.length}
-            </p>
+          <div className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-[repeat(15,minmax(0,1fr))]">
+            {DRAFT_ORDER.map((step, index) => (
+              <div
+                key={index}
+                className={`
+            h-2 angular-frame transition-all
+            ${
+              index < draftStep
+                ? 'bg-brand'
+                : index === draftStep
+                  ? 'bg-yellow-400'
+                  : 'bg-inset'
+            }
+          `}
+              />
+            ))}
           </div>
         </div>
       </Card>
 
       <Card>
         <div className="space-y-8">
-          <TeamSection
-            title="Banned Heroes"
-            heroes={[
-              ...bannedHeroes,
-              ...Array(Math.max(0, 5 - bannedHeroes.length)).fill(null),
-            ]}
-            team="enemy"
-            onPick={() => {}}
-            onRemove={(_, slot) => {
-              setBannedHeroes((prev) => prev.filter((_, i) => i !== slot))
-            }}
-          />
+          {/* Enemy */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="eyebrow text-red-400">RED SIDE</span>
 
-          <div className="flex justify-end">
-            <Button variant="secondary" onClick={openBanPicker}>
-              Ban Hero
-            </Button>
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+                Enemy Team
+              </span>
+            </div>
+
+            <div className="grid grid-cols-5 gap-3">
+              {enemyTeam.map((hero, index) => (
+                <DraftSlot
+                  key={index}
+                  hero={hero}
+                  active={
+                    currentStep === 'red-pick' &&
+                    index === nextEmptySlot('enemy')
+                  }
+                  disabled={
+                    currentStep !== 'red-pick' ||
+                    (hero === null && index !== nextEmptySlot('enemy'))
+                  }
+                  onClick={() => {
+                    if (hero) {
+                      removeHero('enemy', index)
+                    } else {
+                      openPicker('enemy', index)
+                    }
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
-          <TeamSection
-            title="Enemy Team"
-            heroes={enemyTeam}
-            team="enemy"
-            onPick={openPicker}
-            onRemove={removeHero}
-          />
+          {/* Bans */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-red-500">🚫</span>
 
-          <TeamSection
-            title="Your Team"
-            heroes={yourTeam}
-            team="ally"
-            onPick={openPicker}
-            onRemove={removeHero}
-          />
+              <p className="eyebrow">Banned Heroes</p>
+            </div>
 
-          <div className="flex justify-end">
-            <Button variant="secondary" onClick={clearDraft}>
-              Clear Draft
-            </Button>
+            <div className="grid grid-cols-5 gap-3">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <DraftSlot
+                  key={index}
+                  hero={bannedHeroes[index] ?? null}
+                  onClick={() => {
+                    if (bannedHeroes[index]) {
+                      setBannedHeroes((prev) =>
+                        prev.filter((_, i) => i !== index),
+                      )
+                    } else {
+                      openBanPicker()
+                    }
+                  }}
+                />
+              ))}
+            </div>
           </div>
+
+          {/* Ally */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+                Your Team
+              </span>
+
+              <span className="eyebrow text-blue-400">BLUE SIDE</span>
+            </div>
+
+            <div className="grid grid-cols-5 gap-3">
+              {yourTeam.map((hero, index) => (
+                <DraftSlot
+                  key={index}
+                  hero={hero}
+                  active={
+                    currentStep === 'blue-pick' &&
+                    index === nextEmptySlot('ally')
+                  }
+                  disabled={
+                    currentStep !== 'blue-pick' ||
+                    (hero === null && index !== nextEmptySlot('ally'))
+                  }
+                  onClick={() => {
+                    if (hero) {
+                      removeHero('ally', index)
+                    } else {
+                      openPicker('ally', index)
+                    }
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end">
+          <Button variant="secondary" onClick={clearDraft}>
+            Reset Draft
+          </Button>
         </div>
       </Card>
 
@@ -321,13 +340,15 @@ export function DraftAssistant() {
                 <div key={role} className="space-y-3">
                   <h3 className="eyebrow">{role}</h3>
 
-                  <div className="space-y-3">
+                  <div className="grid gap-4 lg:grid-cols-2">
                     {roleHeroes.map((item) => (
                       <Link
                         key={item.hero.id}
                         to={`/heroes/${item.hero.slug}`}
                         className="
                     angular-frame
+                    group
+                    relative
                     flex
                     items-center
                     gap-4
@@ -338,12 +359,14 @@ export function DraftAssistant() {
                     transition-all
                     hover:border-brand/40
                     hover:bg-elevated
+                    hover:-translate-y-1
+                    duration-200
                   "
                       >
                         <img
                           src={item.hero.images.square}
                           alt={item.hero.name}
-                          className="angular-frame h-14 w-14 object-cover"
+                          className="angular-frame h-20 w-20 shrink-0 object-cover"
                         />
 
                         <div className="min-w-0 flex-1">
@@ -392,11 +415,16 @@ export function DraftAssistant() {
                         </div>
 
                         <div className="text-right">
-                          <p className="text-xl font-black text-brand">
+                          <p className="text-3xl font-black text-brand">
                             {item.score}
                           </p>
 
                           <p className="text-xs text-muted">Score</p>
+                          <div className="mt-3 space-y-1 text-[11px] text-muted">
+                            <p>WR {item.hero.rates.winRate}%</p>
+                            <p>PR {item.hero.rates.pickRate}%</p>
+                            <p>BR {item.hero.rates.banRate}%</p>
+                          </div>
                         </div>
                       </Link>
                     ))}
