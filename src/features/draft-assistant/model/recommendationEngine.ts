@@ -195,6 +195,120 @@ function scoreEnemyRoles(
   return score
 }
 
+function scoreDifficulty(
+  hero: Hero,
+  allyTeam: (Hero | null)[],
+  reasons: string[],
+) {
+  let score = 0
+
+  const picked = allyTeam.filter((h): h is Hero => h !== null).length
+
+  if (picked <= 2) {
+    if (hero.difficulty === 'Easy') {
+      score += 10
+      reasons.push('Safe early pick')
+    }
+
+    if (hero.difficulty === 'Hard') {
+      score -= 5
+    }
+  } else {
+    if (hero.difficulty === 'Hard') {
+      score += 8
+      reasons.push('Strong counter carry')
+    }
+  }
+
+  return score
+}
+
+function scoreFlexibility(hero: Hero, reasons: string[]) {
+  let score = 0
+
+  if (hero.roles.length > 1) {
+    score += hero.roles.length * 4
+    reasons.push('Flexible pick')
+  }
+
+  if (hero.lanes.length > 1) {
+    score += hero.lanes.length * 3
+  }
+
+  return score
+}
+
+function scoreScaling(
+  hero: Hero,
+  allyTeam: (Hero | null)[],
+  reasons: string[],
+) {
+  let score = 0
+
+  const earlyGame = allyTeam.filter((h) => h?.difficulty === 'Easy').length
+
+  if (earlyGame >= 3 && hero.roles.includes('Marksman')) {
+    score += 12
+    reasons.push('Adds late-game scaling')
+  }
+
+  if (allyTeam.length <= 2 && hero.roles.includes('Fighter')) {
+    score += 6
+  }
+
+  return score
+}
+
+function scoreCrowdControl(
+  hero: Hero,
+  allyTeam: (Hero | null)[],
+  reasons: string[],
+) {
+  let score = 0
+
+  const hasTank = allyTeam.some((h) => h?.roles.includes('Tank'))
+
+  const hasSupport = allyTeam.some((h) => h?.roles.includes('Support'))
+
+  if (!hasTank && hero.roles.includes('Tank')) {
+    score += 18
+    reasons.push('Reliable crowd control')
+  }
+
+  if (!hasSupport && hero.roles.includes('Support')) {
+    score += 10
+    reasons.push('Provides utility')
+  }
+
+  return score
+}
+
+function scoreDraftPhase(
+  hero: Hero,
+  allyTeam: (Hero | null)[],
+  reasons: string[],
+) {
+  let score = 0
+
+  const picks = allyTeam.filter((h): h is Hero => h !== null).length
+
+  if (picks <= 1) {
+    if (hero.roles.includes('Fighter') || hero.roles.includes('Tank')) {
+      score += 10
+      reasons.push('Strong first pick')
+    }
+  }
+
+  if (picks >= 3) {
+    if (hero.roles.includes('Assassin')) {
+      score += 8
+      reasons.push('Good last pick')
+    }
+  }
+
+  return score
+}
+
 export async function getRecommendations(
   heroes: Hero[],
   enemyTeam: (Hero | null)[],
@@ -220,7 +334,12 @@ export async function getRecommendations(
         scoreDamageBalance(hero, allyTeam, reasons) +
         scoreLaneBalance(hero, allyTeam, reasons) +
         scoreLaneConflicts(hero, allyTeam, reasons) +
-        scoreEnemyRoles(hero, enemyTeam, reasons)
+        scoreEnemyRoles(hero, enemyTeam, reasons) +
+        scoreDifficulty(hero, allyTeam, reasons) +
+        scoreFlexibility(hero, reasons) +
+        scoreScaling(hero, allyTeam, reasons) +
+        scoreCrowdControl(hero, allyTeam, reasons) +
+        scoreDraftPhase(hero, allyTeam, reasons)
 
       const relation = relationships.find((r) => r.heroId === hero.id)
 

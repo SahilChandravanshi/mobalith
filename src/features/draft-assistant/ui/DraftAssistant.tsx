@@ -16,6 +16,8 @@ import {
 
 import { HeroPickerModal } from './HeroPickerModal'
 
+import { DRAFT_ORDER } from '@/features/draft-assistant/model/draftOrder'
+
 function TeamSection({
   title,
   heroes,
@@ -103,6 +105,10 @@ export function DraftAssistant() {
 
   const [bannedHeroes, setBannedHeroes] = useState<Hero[]>([])
 
+  const [draftStep, setDraftStep] = useState(0)
+
+  const currentStep = DRAFT_ORDER[draftStep]
+
   const [pickerOpen, setPickerOpen] = useState(false)
 
   const [activeTeam, setActiveTeam] = useState<'enemy' | 'ally' | 'ban'>(
@@ -128,12 +134,27 @@ export function DraftAssistant() {
   }, [heroes, enemyTeam, yourTeam, bannedHeroes])
 
   function openPicker(team: 'enemy' | 'ally', slot: number) {
+    if (
+      (currentStep === 'blue-pick' && team !== 'ally') ||
+      (currentStep === 'red-pick' && team !== 'enemy')
+    ) {
+      return
+    }
+
+    if (slot !== nextEmptySlot(team)) {
+      return
+    }
+
     setActiveTeam(team)
     setActiveIndex(slot)
     setPickerOpen(true)
   }
 
   function openBanPicker() {
+    if (currentStep !== 'blue-ban' && currentStep !== 'red-ban') {
+      return
+    }
+
     setActiveTeam('ban')
     setPickerOpen(true)
   }
@@ -159,6 +180,15 @@ export function DraftAssistant() {
     setYourTeam(Array(5).fill(null))
   }
 
+  function nextStep() {
+    setDraftStep((step) => Math.min(step + 1, DRAFT_ORDER.length - 1))
+  }
+
+  function nextEmptySlot(team: 'enemy' | 'ally') {
+    const list = team === 'enemy' ? enemyTeam : yourTeam
+    return list.findIndex((hero) => hero === null)
+  }
+
   return (
     <div className="space-y-8">
       <header>
@@ -171,6 +201,26 @@ export function DraftAssistant() {
           recommendations based on counters, synergies, and the current meta.
         </p>
       </header>
+
+      <Card>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="eyebrow">Current Turn</p>
+
+            <h2 className="mt-1 text-xl font-bold capitalize">
+              {DRAFT_ORDER[draftStep]?.replace('-', ' ')}
+            </h2>
+          </div>
+
+          <div className="text-right">
+            <p className="text-sm text-muted">Step</p>
+
+            <p className="text-2xl font-black text-brand">
+              {draftStep + 1}/{DRAFT_ORDER.length}
+            </p>
+          </div>
+        </div>
+      </Card>
 
       <Card>
         <div className="space-y-8">
@@ -372,6 +422,7 @@ export function DraftAssistant() {
             if (bannedHeroes.length >= 5) return
 
             setBannedHeroes((prev) => [...prev, hero])
+            nextStep()
             setPickerOpen(false)
             return
           } else if (activeTeam === 'enemy') {
@@ -380,12 +431,16 @@ export function DraftAssistant() {
               next[activeIndex] = hero
               return next
             })
+
+            nextStep()
           } else {
             setYourTeam((prev) => {
               const next = [...prev]
               next[activeIndex] = hero
               return next
             })
+
+            nextStep()
           }
 
           setPickerOpen(false)
