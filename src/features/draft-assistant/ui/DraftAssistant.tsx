@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
-import type { Hero } from '@/entities/hero/model/hero'
+import type { Hero, HeroRole } from '@/entities/hero/model/hero'
 
 import { useHeroes } from '@/entities/hero/api/useHeroes'
 
@@ -20,11 +21,13 @@ function TeamSection({
   heroes,
   team,
   onPick,
+  onRemove,
 }: {
   title: string
   heroes: (Hero | null)[]
   team: 'enemy' | 'ally'
   onPick: (team: 'enemy' | 'ally', slot: number) => void
+  onRemove: (team: 'enemy' | 'ally', slot: number) => void
 }) {
   return (
     <div className="space-y-4">
@@ -32,42 +35,57 @@ function TeamSection({
 
       <div className="grid grid-cols-5 gap-3">
         {heroes.map((hero, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => onPick(team, index)}
-            className="
-              angular-frame
-              aspect-square
-              overflow-hidden
-              border
-              border-ink/10
-              bg-inset
-              transition-all
-              hover:border-brand/40
-              hover:bg-elevated
-            "
-          >
-            {hero ? (
-              <div className="relative h-full w-full">
-                <img
-                  src={hero.images.square}
-                  alt={hero.name}
-                  className="h-full w-full object-cover"
-                />
+          <div key={index} className="relative">
+            <button
+              type="button"
+              onClick={() => onPick(team, index)}
+              className="
+      angular-frame
+      aspect-square
+      w-full
+      overflow-hidden
+      border
+      border-ink/10
+      bg-inset
+      transition-all
+      hover:border-brand/40
+      hover:bg-elevated
+    "
+            >
+              {hero ? (
+                <div className="relative h-full w-full">
+                  <img
+                    src={hero.images.square}
+                    alt={hero.name}
+                    className="h-full w-full object-cover"
+                  />
 
-                <div className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-0.5">
-                  <p className="truncate text-[10px] font-semibold text-white">
-                    {hero.name}
-                  </p>
+                  <div className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-0.5">
+                    <p className="truncate text-[10px] font-semibold text-white">
+                      {hero.name}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex h-full items-center justify-center text-3xl font-light text-muted">
-                +
-              </div>
+              ) : (
+                <div className="flex h-full items-center justify-center text-3xl font-light text-muted">
+                  +
+                </div>
+              )}
+            </button>
+
+            {hero && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onRemove(team, index)
+                }}
+                className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full bg-red-600 text-xs font-bold text-white hover:bg-red-700"
+              >
+                ×
+              </button>
             )}
-          </button>
+          </div>
         ))}
       </div>
     </div>
@@ -83,24 +101,57 @@ export function DraftAssistant() {
 
   const [yourTeam, setYourTeam] = useState<(Hero | null)[]>(Array(5).fill(null))
 
+  const [bannedHeroes, setBannedHeroes] = useState<Hero[]>([])
+
   const [pickerOpen, setPickerOpen] = useState(false)
 
-  const [activeTeam, setActiveTeam] = useState<'enemy' | 'ally'>('enemy')
+  const [activeTeam, setActiveTeam] = useState<'enemy' | 'ally' | 'ban'>(
+    'enemy',
+  )
 
   const [activeIndex, setActiveIndex] = useState(0)
+
+  const [roleFilter, setRoleFilter] = useState<'All' | HeroRole>('All')
 
   const [recommendations, setRecommendations] = useState<HeroRecommendation[]>(
     [],
   )
 
   useEffect(() => {
-    getRecommendations(heroes, enemyTeam, yourTeam).then(setRecommendations)
-  }, [heroes, enemyTeam, yourTeam])
+    getRecommendations(
+      heroes.filter(
+        (hero) => !bannedHeroes.some((banned) => banned.id === hero.id),
+      ),
+      enemyTeam,
+      yourTeam,
+    ).then(setRecommendations)
+  }, [heroes, enemyTeam, yourTeam, bannedHeroes])
 
   function openPicker(team: 'enemy' | 'ally', slot: number) {
     setActiveTeam(team)
     setActiveIndex(slot)
     setPickerOpen(true)
+  }
+
+  function openBanPicker() {
+    setActiveTeam('ban')
+    setPickerOpen(true)
+  }
+
+  function removeHero(team: 'enemy' | 'ally', slot: number) {
+    if (team === 'enemy') {
+      setEnemyTeam((prev) => {
+        const next = [...prev]
+        next[slot] = null
+        return next
+      })
+    } else {
+      setYourTeam((prev) => {
+        const next = [...prev]
+        next[slot] = null
+        return next
+      })
+    }
   }
 
   function clearDraft() {
@@ -124,10 +175,30 @@ export function DraftAssistant() {
       <Card>
         <div className="space-y-8">
           <TeamSection
+            title="Banned Heroes"
+            heroes={[
+              ...bannedHeroes,
+              ...Array(Math.max(0, 5 - bannedHeroes.length)).fill(null),
+            ]}
+            team="enemy"
+            onPick={() => {}}
+            onRemove={(_, slot) => {
+              setBannedHeroes((prev) => prev.filter((_, i) => i !== slot))
+            }}
+          />
+
+          <div className="flex justify-end">
+            <Button variant="secondary" onClick={openBanPicker}>
+              Ban Hero
+            </Button>
+          </div>
+
+          <TeamSection
             title="Enemy Team"
             heroes={enemyTeam}
             team="enemy"
             onPick={openPicker}
+            onRemove={removeHero}
           />
 
           <TeamSection
@@ -135,6 +206,7 @@ export function DraftAssistant() {
             heroes={yourTeam}
             team="ally"
             onPick={openPicker}
+            onRemove={removeHero}
           />
 
           <div className="flex justify-end">
@@ -145,6 +217,28 @@ export function DraftAssistant() {
         </div>
       </Card>
 
+      <div className="flex flex-wrap gap-2">
+        {(
+          [
+            'All',
+            'Tank',
+            'Fighter',
+            'Assassin',
+            'Mage',
+            'Marksman',
+            'Support',
+          ] as const
+        ).map((role) => (
+          <Button
+            key={role}
+            variant={roleFilter === role ? 'primary' : 'secondary'}
+            onClick={() => setRoleFilter(role)}
+          >
+            {role}
+          </Button>
+        ))}
+      </div>
+
       <Card title="Recommended Picks">
         {recommendations.length === 0 ? (
           <div className="flex min-h-[240px] items-center justify-center">
@@ -153,42 +247,113 @@ export function DraftAssistant() {
             </p>
           </div>
         ) : (
-          <div className="space-y-3">
-            {recommendations.map((item) => (
-              <div
-                key={item.hero.id}
-                className="
-                  angular-frame
-                  flex
-                  items-center
-                  gap-4
-                  border
-                  border-ink/10
-                  bg-inset/50
-                  p-3
-                "
-              >
-                <img
-                  src={item.hero.images.square}
-                  alt={item.hero.name}
-                  className="angular-frame h-14 w-14 object-cover"
-                />
+          <div className="space-y-6">
+            {(
+              [
+                'Tank',
+                'Fighter',
+                'Assassin',
+                'Mage',
+                'Marksman',
+                'Support',
+              ] as const
+            ).map((role) => {
+              const roleHeroes = recommendations.filter(
+                (item) =>
+                  (roleFilter === 'All' ||
+                    item.hero.roles.includes(roleFilter)) &&
+                  item.hero.roles.includes(role),
+              )
 
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold">{item.hero.name}</h3>
+              if (roleHeroes.length === 0) return null
 
-                  <p className="text-sm text-muted">
-                    {item.reasons.join(' • ') || 'Recommended'}
-                  </p>
+              return (
+                <div key={role} className="space-y-3">
+                  <h3 className="eyebrow">{role}</h3>
+
+                  <div className="space-y-3">
+                    {roleHeroes.map((item) => (
+                      <Link
+                        key={item.hero.id}
+                        to={`/heroes/${item.hero.slug}`}
+                        className="
+                    angular-frame
+                    flex
+                    items-center
+                    gap-4
+                    border
+                    border-ink/10
+                    bg-inset/50
+                    p-3
+                    transition-all
+                    hover:border-brand/40
+                    hover:bg-elevated
+                  "
+                      >
+                        <img
+                          src={item.hero.images.square}
+                          alt={item.hero.name}
+                          className="angular-frame h-14 w-14 object-cover"
+                        />
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold">{item.hero.name}</h3>
+
+                            <span className="rounded bg-brand/15 px-2 py-0.5 text-[10px] font-semibold text-brand">
+                              {item.hero.tier}
+                            </span>
+                          </div>
+
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {item.hero.roles.map((role) => (
+                              <span
+                                key={role}
+                                className="rounded bg-muted/20 px-2 py-0.5 text-[10px]"
+                              >
+                                {role}
+                              </span>
+                            ))}
+
+                            <span className="rounded bg-blue-500/15 px-2 py-0.5 text-[10px] text-blue-400">
+                              {item.hero.damageType}
+                            </span>
+
+                            <span className="rounded bg-orange-500/15 px-2 py-0.5 text-[10px] text-orange-400">
+                              {item.hero.difficulty}
+                            </span>
+                          </div>
+
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {(item.reasons.length
+                              ? item.reasons
+                              : ['Recommended']
+                            )
+                              .slice(0, 2)
+                              .map((reason) => (
+                                <span
+                                  key={reason}
+                                  className="rounded bg-brand/10 px-2 py-1 text-[11px] text-brand"
+                                >
+                                  {reason}
+                                </span>
+                              ))}
+                          </div>
+                        </div>
+
+                        <div className="text-right">
+                          <p className="text-xl font-black text-brand">
+                            {item.score}
+                          </p>
+
+                          <p className="text-xs text-muted">Score</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-
-                <div className="text-right">
-                  <p className="text-xl font-black text-brand">{item.score}</p>
-
-                  <p className="text-xs text-muted">Score</p>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </Card>
@@ -199,7 +364,17 @@ export function DraftAssistant() {
         pickedHeroes={[...enemyTeam, ...yourTeam]}
         onClose={() => setPickerOpen(false)}
         onSelect={(hero) => {
-          if (activeTeam === 'enemy') {
+          if (bannedHeroes.some((h) => h.id === hero.id)) {
+            setPickerOpen(false)
+            return
+          }
+          if (activeTeam === 'ban') {
+            if (bannedHeroes.length >= 5) return
+
+            setBannedHeroes((prev) => [...prev, hero])
+            setPickerOpen(false)
+            return
+          } else if (activeTeam === 'enemy') {
             setEnemyTeam((prev) => {
               const next = [...prev]
               next[activeIndex] = hero

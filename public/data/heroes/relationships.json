@@ -3,37 +3,37 @@
     "heroId": 1,
     "counters": [
       {
-        "heroId": 19,
-        "reason": "Outranges and outscales in late game.",
+        "heroId": 16,
+        "reason": "Strong against melee fighters.",
         "score": 20
       },
       {
-        "heroId": 40,
-        "reason": "Can kite and shred tanks.",
+        "heroId": 114,
+        "reason": "Can kite tanks effectively.",
         "score": 15
       }
     ],
     "counteredBy": [
       {
-        "heroId": 23,
-        "reason": "High burst and mobility.",
+        "heroId": 24,
+        "reason": "Can burst Miya before she scales.",
         "score": 30
       },
       {
-        "heroId": 66,
-        "reason": "Strong dive potential.",
+        "heroId": 84,
+        "reason": "Reliable backline dive.",
         "score": 25
       }
     ],
     "synergies": [
       {
         "heroId": 74,
-        "reason": "Excellent peel and protection.",
+        "reason": "Excellent peel.",
         "score": 25
       },
       {
         "heroId": 6,
-        "reason": "Reliable crowd control for free damage.",
+        "reason": "Reliable crowd control.",
         "score": 20
       }
     ]
