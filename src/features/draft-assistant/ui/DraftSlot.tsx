@@ -1,4 +1,4 @@
-import type { Hero } from '@/entities/hero/model/hero'
+import type { Hero } from '@/entities/hero'
 
 interface DraftSlotProps {
   hero: Hero | null
@@ -18,25 +18,17 @@ export function DraftSlot({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`
-      group
-      relative
-      aspect-square
-      overflow-hidden
-      angular-frame
-      border-2
-      bg-inset
-      transition-all
-      duration-200
+      className={`group relative w-full h-[150px] overflow-hidden angular-frame border transition-all duration-200
+        ${
+          active
+            ? 'border-yellow-400 shadow-[0_0_22px_rgba(255,205,60,.45)] scale-[1.04]'
+            : 'border-ink/10 hover:border-brand/40'
+        }
 
-      ${
-        active
-          ? 'border-brand scale-105 shadow-[0_0_20px_rgba(59,130,246,.45)]'
-          : 'border-ink/10 hover:border-brand/40 hover:scale-[1.03]'
-      }
+        ${disabled ? 'opacity-60' : ''}
 
-      ${disabled ? 'cursor-not-allowed opacity-60' : ''}
-    `}
+        bg-elevated
+      `}
     >
       {hero ? (
         <>
@@ -44,28 +36,30 @@ export function DraftSlot({
             src={hero.images.square}
             alt={hero.name}
             className="
-            h-full
-            w-full
-            object-cover
-            transition-transform
-            duration-300
-            group-hover:scale-110
-          "
+              absolute
+              inset-0
+              h-full
+              w-full
+              object-cover
+              transition-transform
+              duration-300
+              group-hover:scale-105
+            "
           />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-transparent" />
 
-          <div className="absolute inset-x-0 bottom-0 p-1">
-            <p className="truncate text-[10px] font-bold text-white">
-              {hero.name}
-            </p>
+          <span className="absolute right-2 top-2 rounded-md bg-brand px-2 py-1 text-[11px] font-black text-white">
+            {hero.tier}
+          </span>
+
+          <div className="absolute bottom-0 left-0 right-0 p-2">
+            <p className="truncate text-sm font-bold tracking-wide text-white">{hero.name}</p>
           </div>
-
-          {active && <div className="absolute inset-0 border-2 border-brand" />}
         </>
       ) : (
         <div className="flex h-full items-center justify-center">
-          <span className="text-4xl font-light text-muted transition-colors group-hover:text-brand">
+          <span className="text-7xl font-thin text-white/20 transition-colors group-hover:text-brand">
             +
           </span>
         </div>
