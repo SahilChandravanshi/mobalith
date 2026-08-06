@@ -215,16 +215,16 @@ export function DraftAssistantV2() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden p-0 border border-ink/10">
+      <Card className="overflow-hidden border border-ink/10 p-0 min-h-[980px]">
         <div className="grid grid-cols-[180px_minmax(0,1fr)_180px]">
           {/* LEFT TEAM */}
 
-          <div className="border-r border-ink/10 bg-inset/40 p-5">
+          <div className="border-r border-ink/10 bg-[#0f141d] p-4">
             <p className="mb-4 text-center text-xs font-bold tracking-[0.25em] text-red-400">
               RED TEAM
             </p>
 
-            <div className="space-y-4 px-2">
+            <div className="space-y-3">
               {enemyTeam.map((hero, index) => (
                 <DraftSlot
                   key={index}
@@ -394,12 +394,12 @@ export function DraftAssistantV2() {
 
           {/* RIGHT TEAM */}
 
-          <div className="border-l border-ink/10 bg-inset/40 p-5">
-            <p className="mb-6 text-center text-xs font-bold tracking-[0.25em] text-blue-400">
+          <div className="border-l border-ink/10 bg-[#0f141d] p-4">
+            <p className="mb-4 text-center text-[11px] font-black tracking-[0.30em] uppercase text-sky-400">
               BLUE TEAM
             </p>
 
-            <div className="space-y-4 px-2">
+            <div className="space-y-3">
               {yourTeam.map((hero, index) => (
                 <DraftSlot
                   key={index}
