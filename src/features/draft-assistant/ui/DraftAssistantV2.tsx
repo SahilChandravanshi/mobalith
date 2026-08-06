@@ -169,7 +169,7 @@ export function DraftAssistantV2() {
             <div>
               <p className="eyebrow">Draft Phase</p>
 
-              <h2 className="mt-1 text-2xl font-black tracking-wide">
+              <h2 className="mt-1 text-3xl font-black tracking-tight">
                 {currentStep
                   ?.replace('blue', 'Blue')
                   .replace('red', 'Red')
@@ -182,11 +182,13 @@ export function DraftAssistantV2() {
                 Progress
               </p>
 
-              <p className="text-3xl font-black text-brand">{draftStep + 1}</p>
+              <p className="text-4xl font-black leading-none text-brand">
+                {draftStep + 1}
+              </p>
             </div>
           </div>
 
-          <div className="h-2 overflow-hidden rounded-full bg-inset">
+          <div className="h-2 overflow-hidden angular-frame bg-inset">
             <div
               className="h-full bg-brand transition-all duration-500"
               style={{
@@ -195,36 +197,33 @@ export function DraftAssistantV2() {
             />
           </div>
 
-          <div className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-[repeat(15,minmax(0,1fr))]">
+          <div className="grid grid-cols-5 gap-1 sm:grid-cols-8 lg:grid-cols-[repeat(15,minmax(0,1fr))]">
             {DRAFT_ORDER.map((_, index) => (
               <div
                 key={index}
-                className={`
-            h-2 angular-frame transition-all
-            ${
-              index < draftStep
-                ? 'bg-brand'
-                : index === draftStep
-                  ? 'bg-yellow-400'
-                  : 'bg-inset'
-            }
-          `}
+                className={`h-1.5 angular-frame transition-all duration-300 ${
+                  index < draftStep
+                    ? 'bg-brand'
+                    : index === draftStep
+                      ? 'bg-yellow-400 shadow-[0_0_12px_rgba(255,210,50,.45)]'
+                      : 'bg-inset'
+                }`}
               />
             ))}
           </div>
         </div>
       </Card>
 
-      <Card className="overflow-hidden border border-ink/10 p-0 min-h-[980px]">
-        <div className="grid grid-cols-[180px_minmax(0,1fr)_180px]">
+      <Card className="overflow-hidden border border-ink/10 p-0 min-h-[1100px]">
+        <div className="grid grid-cols-[220px_minmax(0,1fr)_220px]">
           {/* LEFT TEAM */}
 
-          <div className="border-r border-ink/10 bg-[#0f141d] p-4">
-            <p className="mb-4 text-center text-xs font-bold tracking-[0.25em] text-red-400">
+          <div className="border-r border-ink/10 bg-[#0b1017] p-5">
+            <p className="mb-5 text-center text-[12px] font-black uppercase tracking-[0.35em] text-red-500">
               RED TEAM
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {enemyTeam.map((hero, index) => (
                 <DraftSlot
                   key={index}
@@ -266,6 +265,7 @@ export function DraftAssistantV2() {
                   return (
                     <DraftSlot
                       key={index}
+                      variant="ban"
                       hero={bannedHeroes[index] ?? null}
                       active={active}
                       onClick={() => {
@@ -362,25 +362,24 @@ export function DraftAssistantV2() {
                       <button
                         key={hero.id}
                         onClick={() => selectHero(hero)}
-                        // className="group angular-frame overflow-hidden border border-ink/10 bg-elevated transition-all duration-200 hover:-translate-y-1 hover:border-brand hover:shadow-[0_0_18px_rgba(79,116,255,.28)]"
-                        className="group relative angular-frame overflow-hidden border border-ink/10 bg-elevated transition-all duration-200 hover:z-10 hover:scale-[1.04] hover:border-brand hover:shadow-[0_0_20px_rgba(79,116,255,.35)]"
+                        className="group relative overflow-hidden angular-frame border border-ink/10 bg-elevated transition-all duration-200 hover:-translate-y-1 hover:scale-[1.05] hover:border-brand hover:shadow-[0_0_22px_rgba(79,116,255,.35)]"
                       >
-                        <div className="relative aspect-square">
+                        <div className="relative aspect-[0.68] overflow-hidden">
                           <img
                             loading="lazy"
                             src={hero.images.square}
                             alt={hero.name}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.15]"
                           />
 
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-                          <span className="absolute right-2 top-2 rounded bg-brand px-2 py-1 text-[10px] font-bold text-white">
+                          <span className="absolute right-2 top-2 angular-frame bg-brand/95 px-2 py-1 text-[10px] font-black uppercase text-white shadow-lg">
                             {hero.tier}
                           </span>
 
-                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
-                            <p className="truncate text-center text-xs font-bold text-white">
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-2">
+                            <p className="truncate text-center text-[13px] font-black tracking-wide text-white">
                               {hero.name}
                             </p>
                           </div>
@@ -395,11 +394,11 @@ export function DraftAssistantV2() {
           {/* RIGHT TEAM */}
 
           <div className="border-l border-ink/10 bg-[#0f141d] p-4">
-            <p className="mb-4 text-center text-[11px] font-black tracking-[0.30em] uppercase text-sky-400">
+            <p className="mb-5 text-center text-[12px] font-black uppercase tracking-[0.35em] text-sky-400">
               BLUE TEAM
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {yourTeam.map((hero, index) => (
                 <DraftSlot
                   key={index}
@@ -431,6 +430,85 @@ export function DraftAssistantV2() {
               Reset Draft
             </Button>
           </div>
+        </div>
+      </Card>
+      <Card>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <p className="eyebrow">AI Recommendations</p>
+            <h2 className="mt-1 text-3xl font-black tracking-tight">
+              Recommended Heroes
+            </h2>
+          </div>
+
+          <p className="text-sm text-muted">
+            Based on enemy picks, ally synergy and current meta.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {recommendations.slice(0, 6).map((rec) => (
+            <button
+              key={rec.hero.id}
+              className="group overflow-hidden angular-frame border border-ink/10 bg-elevated text-left transition-all duration-200 hover:-translate-y-2 hover:border-brand hover:shadow-[0_0_28px_rgba(79,116,255,.35)]"
+            >
+              <div className="flex gap-4 p-4">
+                <img
+                  src={rec.hero.images.square}
+                  alt={rec.hero.name}
+                  className="h-36 w-24 object-cover angular-frame transition-transform duration-300 group-hover:scale-105"
+                />
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="truncate text-xl font-black tracking-tight">
+                        {rec.hero.name}
+                      </h3>
+                      <p className="text-xs text-muted">
+                        {rec.hero.roles.join(' • ')}
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <span className="angular-frame bg-brand/15 px-2 py-1 text-[11px] font-bold text-brand">
+                          {rec.hero.tier}
+                        </span>
+
+                        <span className="angular-frame bg-inset px-2 py-1 text-[11px] text-muted">
+                          {rec.hero.rates.winRate.toFixed(1)}%
+                        </span>
+
+                        <span className="angular-frame bg-inset px-2 py-1 text-[11px] text-muted">
+                          {rec.hero.rates.pickRate.toFixed(1)}%
+                        </span>
+                      </div>{' '}
+                      F
+                    </div>
+
+                    <div className="text-right">
+                      <div className="angular-frame bg-brand px-3 py-1 text-xl font-black text-white">
+                        {Math.round(rec.score)}
+                      </div>
+                      <p className="mt-1 text-[10px] uppercase tracking-wider text-muted">
+                        Score
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 space-y-3">
+                    {rec.reasons.slice(0, 3).map((reason, i) => (
+                      <p
+                        key={i}
+                        className="flex items-start gap-2 text-xs leading-relaxed text-muted"
+                      >
+                        <span className="mt-[2px] text-brand">✓</span>
+                        <span>{reason}</span>
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </button>
+          ))}
         </div>
       </Card>
     </div>
