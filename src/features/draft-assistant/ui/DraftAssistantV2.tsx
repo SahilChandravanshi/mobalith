@@ -284,11 +284,11 @@ export function DraftAssistantV2() {
             </div>
 
             <div className="mt-5 flex-1">
-              <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
+              <div className="mb-4 flex items-end justify-between gap-5">
                 <div>
                   <p className="eyebrow">Hero Picker</p>
 
-                  <h2 className="mt-1 text-3xl font-black tracking-tight">
+                  <h2 className="mt-1 text-[32px] font-black leading-none tracking-tight">
                     {activeTeam === 'enemy'
                       ? `Enemy Pick ${activeIndex + 1}`
                       : activeTeam === 'ally'
@@ -298,7 +298,7 @@ export function DraftAssistantV2() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-[320px]">
+                  <div className="w-[280px]">
                     <Input
                       icon="search"
                       placeholder="Search heroes..."
@@ -307,26 +307,35 @@ export function DraftAssistantV2() {
                     />
                   </div>
 
-                  <select
-                    value={roleFilter}
-                    onChange={(e) =>
-                      setRoleFilter(e.target.value as typeof roleFilter)
-                    }
-                    className="angular-frame border border-ink/10 bg-elevated px-3 py-2 text-sm"
-                  >
-                    <option value="All">All</option>
-                    <option value="Tank">Tank</option>
-                    <option value="Fighter">Fighter</option>
-                    <option value="Assassin">Assassin</option>
-                    <option value="Mage">Mage</option>
-                    <option value="Marksman">Marksman</option>
-                    <option value="Support">Support</option>
-                  </select>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      'All',
+                      'Tank',
+                      'Fighter',
+                      'Assassin',
+                      'Mage',
+                      'Marksman',
+                      'Support',
+                    ].map((role) => (
+                      <button
+                        key={role}
+                        type="button"
+                        onClick={() => setRoleFilter(role as typeof roleFilter)}
+                        className={`angular-frame border px-3 py-2 text-[11px] font-black uppercase tracking-wider transition-all ${
+                          roleFilter === role
+                            ? 'border-brand bg-brand text-white shadow-[0_0_14px_rgba(79,116,255,.35)]'
+                            : 'border-ink/10 bg-elevated hover:border-brand/50'
+                        }`}
+                      >
+                        {role}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto rounded-xl bg-inset/10 p-4">
-                <div className="grid grid-cols-7 gap-2 xl:grid-cols-8 2xl:grid-cols-9">
+              <div className="mt-3 flex-1 overflow-y-auto angular-frame border border-ink/10 bg-inset/20 p-3">
+                <div className="grid grid-cols-8 gap-2 xl:grid-cols-9 2xl:grid-cols-10">
                   {heroes
                     .filter((hero) => {
                       const picked = [
@@ -362,24 +371,24 @@ export function DraftAssistantV2() {
                       <button
                         key={hero.id}
                         onClick={() => selectHero(hero)}
-                        className="group relative overflow-hidden angular-frame border border-ink/10 bg-elevated transition-all duration-200 hover:-translate-y-1 hover:scale-[1.05] hover:border-brand hover:shadow-[0_0_22px_rgba(79,116,255,.35)]"
+                        className="group relative overflow-hidden angular-frame border border-ink/10 bg-elevated transition-all duration-200 hover:-translate-y-1 hover:border-brand hover:shadow-[0_0_18px_rgba(79,116,255,.30)]"
                       >
-                        <div className="relative aspect-[0.68] overflow-hidden">
+                        <div className="relative aspect-square overflow-hidden">
                           <img
                             loading="lazy"
                             src={hero.images.square}
                             alt={hero.name}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.15]"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                           />
 
-                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
-                          <span className="absolute right-2 top-2 angular-frame bg-brand/95 px-2 py-1 text-[10px] font-black uppercase text-white shadow-lg">
+                          <span className="absolute right-1 top-1 angular-frame bg-brand px-1.5 py-0.5 text-[9px] font-black text-white">
                             {hero.tier}
                           </span>
 
                           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-2">
-                            <p className="truncate text-center text-[13px] font-black tracking-wide text-white">
+                            <p className="truncate text-center text-[11px] font-bold tracking-wide text-white">
                               {hero.name}
                             </p>
                           </div>
