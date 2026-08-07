@@ -162,7 +162,7 @@ export function DraftAssistant() {
           </div>
 
           <div className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-[repeat(15,minmax(0,1fr))]">
-            {DRAFT_ORDER.map((step, index) => (
+            {DRAFT_ORDER.map((_, index) => (
               <div
                 key={index}
                 className={`

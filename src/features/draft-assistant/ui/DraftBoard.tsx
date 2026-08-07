@@ -11,12 +11,14 @@ export function DraftBoard({
   yourTeam,
   bannedHeroes,
 }: DraftBoardProps) {
+  void enemyTeam
+  void yourTeam
+  void bannedHeroes
+
   return (
     <div className="grid gap-8 lg:grid-cols-[180px_1fr_180px]">
       {/* Enemy Picks */}
-      <div>
-        Enemy Picks
-      </div>
+      <div>Enemy Picks</div>
 
       {/* Center */}
       <div className="space-y-6">
@@ -26,9 +28,7 @@ export function DraftBoard({
       </div>
 
       {/* Your Picks */}
-      <div>
-        Your Picks
-      </div>
+      <div>Your Picks</div>
     </div>
   )
 }

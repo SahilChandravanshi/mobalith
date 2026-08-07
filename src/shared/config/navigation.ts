@@ -13,121 +13,137 @@ import {
   Wrench,
   BookOpen,
   type LucideIcon,
-} from "lucide-react";
+} from 'lucide-react'
 
 export const navigationSections = [
-  "Heroes",
-  "Strategy",
-  "Tools",
-] as const;
+  'Heroes',
+  'Strategy',
+  'Game Data',
+  'Utilities',
+  'About',
+] as const
 
 export interface FeatureRoute {
-  path: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  section: (typeof navigationSections)[number];
-  nav?: boolean;
+  path: string
+  title: string
+  description: string
+  icon: LucideIcon
+  section: (typeof navigationSections)[number]
+  nav?: boolean
 }
 
 export const featureRoutes: FeatureRoute[] = [
+  // ---------------- HEROES ----------------
+
   {
-    path: "heroes",
-    title: "Heroes",
-    description: "Browse every Mobile Legends hero.",
+    path: 'heroes',
+    title: 'Heroes',
+    description: 'Browse every Mobile Legends hero.',
     icon: Shield,
-    section: "Heroes",
+    section: 'Heroes',
   },
   {
-    path: "heroes/:slug",
-    title: "Hero Details",
-    description: "Hero details.",
+    path: 'heroes/:slug',
+    title: 'Hero Details',
+    description: 'Hero details.',
     icon: Shield,
-    section: "Heroes",
+    section: 'Heroes',
     nav: false,
   },
+
+  // ---------------- GAME DATA ----------------
+
   {
-    path: "items",
-    title: "Items",
-    description: "Browse all items.",
+    path: 'items',
+    title: 'Items',
+    description: 'Browse all items.',
     icon: Gem,
-    section: "Heroes",
+    section: 'Game Data',
   },
   {
-    path: "emblems",
-    title: "Emblems",
-    description: "Emblem builds.",
+    path: 'emblems',
+    title: 'Emblems',
+    description: 'Emblem builds.',
     icon: Sparkles,
-    section: "Heroes",
+    section: 'Game Data',
   },
+
+  // ---------------- STRATEGY ----------------
+
   {
-    path: "tier-lists",
-    title: "Tier Lists",
-    description: "Current meta rankings.",
+    path: 'tier-lists',
+    title: 'Tier Lists',
+    description: 'Current meta rankings.',
     icon: Trophy,
-    section: "Strategy",
+    section: 'Strategy',
   },
   {
-    path: "counters",
-    title: "Counters",
-    description: "Hero counters.",
+    path: 'counters',
+    title: 'Counters',
+    description: 'Hero counters.',
     icon: ShieldAlert,
-    section: "Strategy",
+    section: 'Strategy',
   },
   {
-    path: "synergy",
-    title: "Synergy",
-    description: "Hero synergies.",
+    path: 'synergy',
+    title: 'Synergy',
+    description: 'Hero synergies.',
     icon: Users,
-    section: "Strategy",
+    section: 'Strategy',
   },
   {
-    path: "draft-assistant",
-    title: "Draft Assistant",
-    description: "Draft recommendations.",
+    path: 'draft-assistant',
+    title: 'Draft Assistant',
+    description: 'Draft recommendations.',
     icon: Crosshair,
-    section: "Strategy",
+    section: 'Strategy',
   },
+
+  // ---------------- UTILITIES ----------------
+
   {
-    path: "compare-heroes",
-    title: "Compare Heroes",
-    description: "Compare heroes.",
+    path: 'compare-heroes',
+    title: 'Compare Heroes',
+    description: 'Compare heroes.',
     icon: ListFilter,
-    section: "Tools",
+    section: 'Utilities',
   },
   {
-    path: "meta-pulse",
-    title: "Meta Pulse",
-    description: "Latest meta trends.",
+    path: 'meta-pulse',
+    title: 'Meta Pulse',
+    description: 'Latest meta trends.',
     icon: Activity,
-    section: "Tools",
+    section: 'Utilities',
   },
   {
-    path: "mobalith-intelligence",
-    title: "Mobalith Intelligence",
-    description: "AI-powered insights.",
+    path: 'mobalith-intelligence',
+    title: 'Mobalith Intelligence',
+    description: 'AI-powered insights.',
     icon: BrainCircuit,
-    section: "Tools",
+    section: 'Utilities',
   },
   {
-    path: "labs",
-    title: "Labs",
-    description: "Experimental features.",
+    path: 'labs',
+    title: 'Labs',
+    description: 'Experimental features.',
     icon: FlaskConical,
-    section: "Tools",
+    section: 'Utilities',
   },
   {
-    path: "builds",
-    title: "Builds",
-    description: "Recommended builds.",
+    path: 'builds',
+    title: 'Builds',
+    description: 'Recommended builds.',
     icon: Wrench,
-    section: "Tools",
+    section: 'Utilities',
   },
+
+  // ---------------- ABOUT ----------------
+
   {
-    path: "patch-notes",
-    title: "Patch Notes",
-    description: "Latest game updates.",
+    path: 'patch-notes',
+    title: 'Patch Notes',
+    description: 'Latest game updates.',
     icon: BookOpen,
-    section: "Tools",
+    section: 'About',
   },
-];
+]
