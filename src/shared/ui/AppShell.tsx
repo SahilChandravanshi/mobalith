@@ -1,10 +1,21 @@
-import { useState } from 'react'
-import { Moon, Search, Sun } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+
+import {
+  Activity,
+  Crosshair,
+  Ellipsis,
+  Moon,
+  Search,
+  Shield,
+  Sun,
+} from 'lucide-react'
+
 import { NavLink, Outlet } from 'react-router-dom'
 
 import { MoreDropdown } from '@/shared/ui/MoreDropdown'
 
-import { featureRoutes, navigationSections } from '@/shared/config/navigation'
+import { featureRoutes } from '@/shared/config/navigation'
 
 import { useTheme } from '@/shared/model/useTheme'
 
@@ -25,15 +36,34 @@ export function AppShell() {
 
   const isDark = theme !== 'light'
 
-  const primaryRoutes = featureRoutes.filter((route) =>
-    ['heroes', 'draft-assistant', 'meta-pulse'].includes(route.path),
+  const gameDataRoutes = featureRoutes.filter((route) =>
+    ['items', 'emblems'].includes(route.path),
   )
 
-  const toolRoutes = featureRoutes.filter(
-    (r) => r.section === 'Tools' && r.nav !== false,
+  const utilityRoutes = featureRoutes.filter((route) =>
+    ['compare-heroes', 'mobalith-intelligence', 'labs', 'builds'].includes(
+      route.path,
+    ),
+  )
+
+  const aboutRoutes = featureRoutes.filter(
+    (route) => route.path === 'patch-notes',
   )
 
   const [toolsOpen, setToolsOpen] = useState(false)
+
+  useEffect(() => {
+    if (!toolsOpen) {
+      document.body.style.overflow = ''
+      return
+    }
+
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [toolsOpen])
 
   return (
     <div className="app-canvas min-h-screen bg-canvas text-ink">
@@ -62,7 +92,9 @@ export function AppShell() {
                   M
                 </span>
 
-                <span className="text-lg font-black tracking-tight">Mobalith</span>
+                <span className="text-lg font-black tracking-tight">
+                  Mobalith
+                </span>
               </NavLink>
 
               <NavLink to="/meta-pulse" className={linkClass}>
@@ -72,19 +104,6 @@ export function AppShell() {
               <MoreDropdown />
             </div>
           </div>
-
-          {/* MOBILE LOGO */}
-
-          <NavLink
-            to="/"
-            className="flex items-center gap-2 font-semibold tracking-tight lg:hidden"
-          >
-            <span className="angular-frame grid size-8 place-items-center bg-gradient-to-br from-brand to-cyan font-black text-white shadow-glow">
-              M
-            </span>
-
-            <span>Mobalith</span>
-          </NavLink>
 
           {/* MOBILE LOGO */}
           <NavLink
@@ -124,89 +143,219 @@ export function AppShell() {
           <Outlet />
         </main>
       </div>
+      {/* MOBILE NAVIGATION + MORE SHEET */}
+      <div className="fixed inset-0 z-50 pointer-events-none lg:hidden">
+        <AnimatePresence>
+          {toolsOpen && (
+            <>
+              {/* Backdrop */}
+              <motion.button
+                type="button"
+                aria-label="Close More menu"
+                className="pointer-events-auto absolute inset-0 bg-black/45"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18 }}
+                onClick={() => setToolsOpen(false)}
+              />
 
-      <nav
-        aria-label="Mobile navigation"
-        className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t border-ink/10 bg-surface/95 px-2 py-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden"
-      >
-        <NavLink to="/heroes" className={mobileLinkClass}>
-          Heroes
-        </NavLink>
+              {/* More Sheet */}
+              <motion.div
+                className="pointer-events-auto absolute inset-x-0 bottom-0 z-40 angular-frame border-x border-t border-ink/10 bg-surface px-5 pt-3 pb-[82px] shadow-none"
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 40, opacity: 0 }}
+                transition={{
+                  duration: 0.22,
+                  ease: 'easeOut',
+                }}
+                drag="y"
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragElastic={0.15}
+                onDragEnd={(_, info) => {
+                  if (info.offset.y > 60 || info.velocity.y > 400) {
+                    setToolsOpen(false)
+                  }
+                }}
+              >
+                {/* Drag handle */}
+                <div className="mx-auto mb-3 h-1 w-12 rounded-full bg-white/20" />
 
-        <NavLink to="/draft-assistant" className={mobileLinkClass}>
-          Draft
-        </NavLink>
+                <h3 className="mb-3 text-center text-base font-black">More</h3>
 
-        <NavLink to="/" end className="flex -mt-5 flex-col items-center gap-1">
-          <span className="angular-frame grid h-14 w-14 place-items-center bg-gradient-to-br from-brand to-cyan text-xl font-black text-white shadow-glow ring-2 ring-brand/20">
-            M
-          </span>
-        </NavLink>
-
-        <NavLink to="/meta-pulse" className={mobileLinkClass}>
-          Meta
-        </NavLink>
-
-        <button
-          type="button"
-          onClick={() => setToolsOpen(true)}
-          className="flex flex-col items-center justify-center gap-1 text-[0.625rem] font-semibold text-muted"
-        >
-          Tools
-          <span className="text-xs">▲</span>
-        </button>
-      </nav>
-      {toolsOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-30 bg-black/50 lg:hidden"
-            onClick={() => setToolsOpen(false)}
-          />
-
-          <div className="fixed inset-x-0 bottom-0 z-40 rounded-t-[28px] border-t border-ink/10 bg-surface px-6 pt-5 pb-8 shadow-2xl lg:hidden">
-            <div className="mx-auto mb-5 h-1.5 w-14 rounded-full bg-white/20" />
-
-            <h3 className="mb-6 text-center text-lg font-bold">More</h3>
-
-            {navigationSections
-              .filter((section) => !['Heroes'].includes(section))
-              .map((section) => {
-                const routes = featureRoutes.filter(
-                  (route) =>
-                    route.section === section &&
-                    route.nav !== false &&
-                    !['heroes', 'draft-assistant', 'meta-pulse'].includes(
-                      route.path,
-                    ),
-                )
-
-                if (!routes.length) return null
-
-                return (
-                  <div key={section} className="mb-6">
-                    <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-muted">
-                      {section}
+                <div className="space-y-4">
+                  {/* Strategy */}
+                  <section>
+                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
+                      Strategy
                     </p>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      {routes.map(({ path, title, icon: Icon }) => (
+                    <div className="grid grid-cols-3 gap-1">
+                      {featureRoutes
+                        .filter(
+                          (route) =>
+                            route.section === 'Strategy' &&
+                            route.path !== 'draft-assistant' &&
+                            route.nav !== false,
+                        )
+                        .map(({ path, title, icon: Icon }) => (
+                          <NavLink
+                            key={path}
+                            to={path}
+                            onClick={() => setToolsOpen(false)}
+                            className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
+                          >
+                            <Icon size={15} strokeWidth={2} />
+
+                            <span className="text-[10px] font-medium leading-tight">
+                              {title.replace(' Assistant', '')}
+                            </span>
+                          </NavLink>
+                        ))}
+                    </div>
+                  </section>
+
+                  {/* GAME DATA */}
+                  <section>
+                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
+                      Game Data
+                    </p>
+
+                    <div className="grid grid-cols-4 gap-1">
+                      {gameDataRoutes.map(({ path, title, icon: Icon }) => (
                         <NavLink
                           key={path}
-                          to={path}
+                          to={`/${path}`}
                           onClick={() => setToolsOpen(false)}
-                          className="angular-frame flex items-center gap-3 px-4 py-3.5 transition-all duration-150 hover:scale-[1.02] hover:bg-brand/8"
+                          className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
                         >
-                          <Icon size={18} />
-                          {title}
+                          <Icon size={15} strokeWidth={2} />
+
+                          <span className="text-[10px] font-medium leading-tight">
+                            {title}
+                          </span>
                         </NavLink>
                       ))}
                     </div>
-                  </div>
-                )
-              })}
-          </div>
-        </>
-      )}
+                  </section>
+
+                  {/* UTILITIES */}
+                  <section>
+                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
+                      Utilities
+                    </p>
+
+                    <div className="grid grid-cols-4 gap-1">
+                      {utilityRoutes.map(({ path, title, icon: Icon }) => (
+                        <NavLink
+                          key={path}
+                          to={`/${path}`}
+                          onClick={() => setToolsOpen(false)}
+                          className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
+                        >
+                          <Icon size={15} strokeWidth={2} />
+
+                          <span className="text-[10px] font-medium leading-tight">
+                            {title}
+                          </span>
+                        </NavLink>
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* ABOUT */}
+                  <section>
+                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
+                      About
+                    </p>
+
+                    <div className="grid grid-cols-4 gap-1">
+                      {aboutRoutes.map(({ path, title, icon: Icon }) => (
+                        <NavLink
+                          key={path}
+                          to={`/${path}`}
+                          onClick={() => setToolsOpen(false)}
+                          className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
+                        >
+                          <Icon size={15} strokeWidth={2} />
+
+                          <span className="text-[10px] font-medium leading-tight">
+                            {title}
+                          </span>
+                        </NavLink>
+                      ))}
+                    </div>
+                  </section>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Bottom Navigation */}
+        <nav
+          aria-label="Mobile navigation"
+          className="pointer-events-auto absolute inset-x-0 bottom-0 z-50 flex items-end justify-around border-t border-ink/10 bg-surface/95 px-3 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-xl"
+        >
+          {/* Heroes */}
+          <NavLink
+            to="/heroes"
+            className={mobileLinkClass}
+            onClick={() => setToolsOpen(false)}
+          >
+            <Shield size={17} strokeWidth={2} />
+            <span>Heroes</span>
+          </NavLink>
+
+          {/* Draft */}
+          <NavLink
+            to="/draft-assistant"
+            className={mobileLinkClass}
+            onClick={() => setToolsOpen(false)}
+          >
+            <Crosshair size={17} strokeWidth={2} />
+            <span>Draft</span>
+          </NavLink>
+
+          {/* Mobalith */}
+          <NavLink
+            to="/"
+            end
+            className="flex -mt-5 flex-col items-center gap-1 text-brand"
+            onClick={() => setToolsOpen(false)}
+          >
+            <span className="angular-frame grid h-14 w-14 place-items-center bg-gradient-to-br from-brand to-cyan text-xl font-black text-white shadow-glow ring-2 ring-brand/20">
+              M
+            </span>
+          </NavLink>
+
+          {/* Meta */}
+          <NavLink
+            to="/meta-pulse"
+            className={mobileLinkClass}
+            onClick={() => setToolsOpen(false)}
+          >
+            <Activity size={17} strokeWidth={2} />
+            <span>Meta</span>
+          </NavLink>
+
+          {/* More */}
+          <button
+            type="button"
+            aria-label="Open More menu"
+            aria-expanded={toolsOpen}
+            className={mobileLinkClass({
+              isActive: toolsOpen,
+            })}
+            onClick={() => setToolsOpen((prev) => !prev)}
+          >
+            <Ellipsis size={19} strokeWidth={2.5} />
+
+            <span>More</span>
+          </button>
+        </nav>
+      </div>
     </div>
   )
 }
