@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import {
@@ -20,11 +20,36 @@ import { featureRoutes } from '@/shared/config/navigation'
 import { useTheme } from '@/shared/model/useTheme'
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
-  `angular-frame flex items-center gap-3 border px-4 py-2.5 text-sm font-medium transition-colors duration-150 ease-out ${
-    isActive
-      ? 'border-brand/20 bg-brand/15 text-brand'
-      : 'border-transparent text-muted hover:border-ink/10 hover:bg-brand/8 hover:text-ink'
+  `relative flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+    isActive ? 'text-brand' : 'text-muted hover:text-ink'
   }`
+
+function DesktopNavLink({
+  to,
+  children,
+  end = false,
+  onHover,
+  registerRef,
+}: {
+  to: string
+  children: React.ReactNode
+  end?: boolean
+  onHover: (path: string | null) => void
+  registerRef: (path: string, element: HTMLAnchorElement | null) => void
+}) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      ref={(element) => registerRef(to, element)}
+      className={linkClass}
+      onMouseEnter={() => onHover(to)}
+      onMouseLeave={() => onHover(null)}
+    >
+      {children}
+    </NavLink>
+  )
+}
 
 const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
   `angular-frame flex flex-col items-center gap-1 px-2 py-1.5 text-[0.625rem] font-semibold ${
@@ -47,6 +72,48 @@ export function AppShell() {
   )
 
   const [toolsOpen, setToolsOpen] = useState(false)
+
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null)
+
+  const navRef = useRef<HTMLDivElement>(null)
+
+  const navItemRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
+
+  const moreButtonRef = useRef<HTMLButtonElement | null>(null)
+
+  const [navIndicator, setNavIndicator] = useState({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  })
+
+  useEffect(() => {
+    if (!hoveredNav) {
+      setNavIndicator((current) => ({
+        ...current,
+        opacity: 0,
+      }))
+      return
+    }
+
+    const item =
+      hoveredNav === 'more'
+        ? moreButtonRef.current
+        : navItemRefs.current[hoveredNav]
+
+    const container = navRef.current
+
+    if (!item || !container) return
+
+    const itemRect = item.getBoundingClientRect()
+    const containerRect = container.getBoundingClientRect()
+
+    setNavIndicator({
+      left: itemRect.left - containerRect.left,
+      width: itemRect.width,
+      opacity: 1,
+    })
+  }, [hoveredNav])
 
   useEffect(() => {
     if (!toolsOpen) {
@@ -71,18 +138,46 @@ export function AppShell() {
           {/* CENTER NAVIGATION */}
 
           <div className="hidden flex-1 items-center justify-center lg:flex">
-            <div className="flex items-center gap-2">
-              <NavLink to="/heroes" className={linkClass}>
-                Heroes
-              </NavLink>
+            <div ref={navRef} className="relative flex items-center gap-2">
+              <motion.span
+                className="pointer-events-none absolute bottom-0 h-0.5 bg-brand"
+                animate={{
+                  left: navIndicator.left,
+                  width: navIndicator.width,
+                  opacity: navIndicator.opacity,
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 380,
+                  damping: 15,
+                  mass: 0.7,
+                }}
+              />
 
-              <NavLink to="/draft-assistant" className={linkClass}>
+              <DesktopNavLink
+                to="/heroes"
+                onHover={setHoveredNav}
+                registerRef={(path, element) => {
+                  navItemRefs.current[path] = element
+                }}
+              >
+                Heroes
+              </DesktopNavLink>
+
+              <DesktopNavLink
+                to="/draft-assistant"
+                onHover={setHoveredNav}
+                registerRef={(path, element) => {
+                  navItemRefs.current[path] = element
+                }}
+              >
                 Draft
-              </NavLink>
+              </DesktopNavLink>
 
               <NavLink
                 to="/"
                 className="mx-6 flex items-center gap-3 font-semibold tracking-tight"
+                onMouseEnter={() => setHoveredNav(null)}
               >
                 <span className="angular-frame grid size-9 place-items-center bg-gradient-to-br from-brand to-cyan font-black text-white shadow-glow">
                   M
@@ -93,11 +188,22 @@ export function AppShell() {
                 </span>
               </NavLink>
 
-              <NavLink to="/meta-pulse" className={linkClass}>
+              <DesktopNavLink
+                to="/meta-pulse"
+                onHover={setHoveredNav}
+                registerRef={(path, element) => {
+                  navItemRefs.current[path] = element
+                }}
+              >
                 Meta
-              </NavLink>
+              </DesktopNavLink>
 
-              <MoreDropdown />
+              <MoreDropdown
+                buttonRef={moreButtonRef}
+                onHover={(hovered) => {
+                  setHoveredNav(hovered ? 'more' : null)
+                }}
+              />
             </div>
           </div>
 
@@ -183,7 +289,7 @@ export function AppShell() {
                 <div className="space-y-4">
                   {/* Strategy */}
                   <section>
-                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
+                    <p className="mb-5 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
                       Strategy
                     </p>
 
@@ -200,7 +306,7 @@ export function AppShell() {
                             key={path}
                             to={path}
                             onClick={() => setToolsOpen(false)}
-                           className="angular-frame flex flex-col items-center gap-1 px-2 py-1.5 text-[0.625rem] font-semibold text-center transition-colors hover:bg-brand/8"
+                            className="angular-frame flex flex-col items-center gap-1 px-2 py-1.5 text-[0.625rem] font-semibold text-center transition-colors hover:bg-brand/8"
                           >
                             <Icon size={17} strokeWidth={2} />
 
@@ -214,7 +320,7 @@ export function AppShell() {
 
                   {/* GAME DATA */}
                   <section>
-                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
+                    <p className="mb-5 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
                       Game Data
                     </p>
 
@@ -238,7 +344,7 @@ export function AppShell() {
 
                   {/* UTILITIES */}
                   <section>
-                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
+                    <p className="mb-5 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
                       Utilities
                     </p>
 
