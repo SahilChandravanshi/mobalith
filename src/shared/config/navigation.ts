@@ -6,12 +6,13 @@ import {
   ShieldAlert,
   Users,
   Crosshair,
-  ListFilter,
+  Scale,
   Activity,
   BrainCircuit,
   FlaskConical,
   Wrench,
   BookOpen,
+  WandSparkles ,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -67,6 +68,20 @@ export const featureRoutes: FeatureRoute[] = [
     icon: Sparkles,
     section: 'Game Data',
   },
+  {
+    path: 'battle-spells',
+    title: 'Battle Spells',
+    description: 'Browse all battle spells.',
+    icon: WandSparkles ,
+    section: 'Game Data',
+  },
+  {
+    path: 'patch-notes',
+    title: 'Patch Notes',
+    description: 'Latest game updates.',
+    icon: BookOpen,
+    section: 'Game Data',
+  },
 
   // ---------------- STRATEGY ----------------
 
@@ -100,12 +115,18 @@ export const featureRoutes: FeatureRoute[] = [
   },
 
   // ---------------- UTILITIES ----------------
-
+  {
+    path: 'builds',
+    title: 'Builds',
+    description: 'Recommended builds.',
+    icon: Wrench,
+    section: 'Utilities',
+  },
   {
     path: 'compare-heroes',
-    title: 'Compare Heroes',
+    title: 'Versus',
     description: 'Compare heroes.',
-    icon: ListFilter,
+    icon: Scale,
     section: 'Utilities',
   },
   {
@@ -117,7 +138,7 @@ export const featureRoutes: FeatureRoute[] = [
   },
   {
     path: 'mobalith-intelligence',
-    title: 'Mobalith Intelligence',
+    title: 'Mobalith AI',
     description: 'AI-powered insights.',
     icon: BrainCircuit,
     section: 'Utilities',
@@ -128,22 +149,5 @@ export const featureRoutes: FeatureRoute[] = [
     description: 'Experimental features.',
     icon: FlaskConical,
     section: 'Utilities',
-  },
-  {
-    path: 'builds',
-    title: 'Builds',
-    description: 'Recommended builds.',
-    icon: Wrench,
-    section: 'Utilities',
-  },
-
-  // ---------------- ABOUT ----------------
-
-  {
-    path: 'patch-notes',
-    title: 'Patch Notes',
-    description: 'Latest game updates.',
-    icon: BookOpen,
-    section: 'About',
   },
 ]

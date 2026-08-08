@@ -37,17 +37,13 @@ export function AppShell() {
   const isDark = theme !== 'light'
 
   const gameDataRoutes = featureRoutes.filter((route) =>
-    ['items', 'emblems'].includes(route.path),
+    ['items', 'emblems', 'battle-spells', 'patch-notes'].includes(route.path),
   )
 
   const utilityRoutes = featureRoutes.filter((route) =>
     ['compare-heroes', 'mobalith-intelligence', 'labs', 'builds'].includes(
       route.path,
     ),
-  )
-
-  const aboutRoutes = featureRoutes.filter(
-    (route) => route.path === 'patch-notes',
   )
 
   const [toolsOpen, setToolsOpen] = useState(false)
@@ -204,11 +200,11 @@ export function AppShell() {
                             key={path}
                             to={path}
                             onClick={() => setToolsOpen(false)}
-                            className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
+                           className="angular-frame flex flex-col items-center gap-1 px-2 py-1.5 text-[0.625rem] font-semibold text-center transition-colors hover:bg-brand/8"
                           >
-                            <Icon size={15} strokeWidth={2} />
+                            <Icon size={17} strokeWidth={2} />
 
-                            <span className="text-[10px] font-medium leading-tight">
+                            <span className="text-[0.625rem] font-semibold leading-tight">
                               {title.replace(' Assistant', '')}
                             </span>
                           </NavLink>
@@ -230,9 +226,9 @@ export function AppShell() {
                           onClick={() => setToolsOpen(false)}
                           className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
                         >
-                          <Icon size={15} strokeWidth={2} />
+                          <Icon size={17} strokeWidth={2} />
 
-                          <span className="text-[10px] font-medium leading-tight">
+                          <span className="text-[0.625rem] font-semibold leading-tight">
                             {title}
                           </span>
                         </NavLink>
@@ -246,7 +242,7 @@ export function AppShell() {
                       Utilities
                     </p>
 
-                    <div className="grid grid-cols-4 gap-1">
+                    <div className="grid grid-cols-4 gap-1 pb-2">
                       {utilityRoutes.map(({ path, title, icon: Icon }) => (
                         <NavLink
                           key={path}
@@ -254,33 +250,9 @@ export function AppShell() {
                           onClick={() => setToolsOpen(false)}
                           className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
                         >
-                          <Icon size={15} strokeWidth={2} />
+                          <Icon size={17} strokeWidth={2} />
 
-                          <span className="text-[10px] font-medium leading-tight">
-                            {title}
-                          </span>
-                        </NavLink>
-                      ))}
-                    </div>
-                  </section>
-
-                  {/* ABOUT */}
-                  <section>
-                    <p className="mb-3 border-b border-ink/10 pb-1 text-[9px] font-black uppercase tracking-[0.2em] text-brand">
-                      About
-                    </p>
-
-                    <div className="grid grid-cols-4 gap-1">
-                      {aboutRoutes.map(({ path, title, icon: Icon }) => (
-                        <NavLink
-                          key={path}
-                          to={`/${path}`}
-                          onClick={() => setToolsOpen(false)}
-                          className="angular-frame flex h-12 flex-col items-center justify-center gap-0.5 px-1 text-center transition-colors hover:bg-brand/8"
-                        >
-                          <Icon size={15} strokeWidth={2} />
-
-                          <span className="text-[10px] font-medium leading-tight">
+                          <span className="text-[0.625rem] font-semibold leading-tight">
                             {title}
                           </span>
                         </NavLink>
